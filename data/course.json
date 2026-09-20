@@ -1,0 +1,23 @@
+{
+  "comment": "地点名とラベル。roadWidth は路面の最大幅、minHalfWidth は最小の半幅。実際の幅は区間ごとに PLATEAU の道路面の縁までの距離から決める (course_path.json の halfWidth)。実際の走行線は tools/build_course.mjs が、案内線 (data/drawn_route.json) に沿わせつつ PLATEAU の道路面 (tran) の上を通るよう探索して data/course_path.json に出力する。福山駅を発ち鞆の浦の常夜燈で終わる一本道 (周回しない)。",
+  "origin": { "lat": 34.4893, "lon": 133.3624 },
+  "roadWidth": 20,
+  "minHalfWidth": 4.5,
+  "viaductHeight": 13,
+
+  "waypoints": [
+    { "name": "福山駅", "en": "Fukuyama Sta.",               "lat": 34.48890, "lon": 133.36231, "label": true },
+    { "name": "入船町", "short": "入船", "en": "Irifune",     "lat": 34.48648, "lon": 133.37417, "label": true },
+    { "name": "北吉津町", "short": "北吉津", "en": "Kitayoshizu", "lat": 34.49495, "lon": 133.36109, "label": true },
+    { "name": "福山城", "en": "Fukuyama Castle",             "lat": 34.49104, "lon": 133.36113, "label": true },
+    { "name": "草戸稲荷神社", "short": "草戸稲荷", "en": "Kusado Inari Shrine", "lat": 34.47955, "lon": 133.34644, "label": true },
+    { "name": "草戸町", "short": "草戸", "en": "Kusado",      "lat": 34.47000, "lon": 133.35800, "label": true },
+    { "name": "水呑大橋", "en": "Minomi Ohashi Bridge",       "lat": 34.46530, "lon": 133.36400, "label": true },
+    { "name": "箕島町", "short": "箕島", "en": "Minoshima",   "lat": 34.45300, "lon": 133.39270, "label": true },
+    { "name": "芦田川大橋", "en": "Ashidagawa Ohashi Bridge", "lat": 34.44994, "lon": 133.38961, "label": true },
+    { "name": "水呑町", "short": "水呑", "en": "Minomi",      "lat": 34.44400, "lon": 133.38480, "label": true },
+    { "name": "田尻町", "short": "田尻", "en": "Tajiri",      "lat": 34.42054, "lon": 133.38400, "label": true },
+    { "name": "鞆の浦", "en": "Tomonoura",                    "lat": 34.38600, "lon": 133.38340, "label": true },
+    { "name": "鞆港 常夜燈", "short": "常夜燈", "en": "Tomo Port Joyato", "lat": 34.38245, "lon": 133.38080, "label": true }
+  ]
+}
