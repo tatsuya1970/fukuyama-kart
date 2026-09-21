@@ -1,0 +1,265 @@
+<template>
+  <div data-hf-id="hf-dnd8" id="root" data-composition-id="01-castle" data-width="1920" data-height="1080" data-start="0" data-duration="5">
+    <!-- Approved frame-local video: full-bleed ground, full brightness, plays its whole 5.00s -->
+    <!-- approved frame video hoisted by assemble-index -->
+
+    <!-- Track 1 — full-bleed ground layer (the footage is the ground; this carries the dark plate) -->
+    <div data-hf-id="hf-het8" class="clip castle01-layer" id="castle01-ground" data-start="0" data-duration="5" data-track-index="1">
+      <div data-hf-id="hf-m5nu" class="castle01-scrim" id="castle01-scrim"></div>
+      <div data-hf-id="hf-lpyc" class="castle01-band" id="castle01-band"></div>
+    </div>
+
+    <!-- Track 2a — Scene 2 copy, cleared by a hard cut at 2.9s -->
+    <div data-hf-id="hf-sh7q" class="clip castle01-layer" id="castle01-type" data-start="1.8" data-duration="1.1" data-track-index="2">
+      <div data-hf-id="hf-fquc" class="castle01-line">
+        <span data-hf-id="hf-isih" class="castle01-mask" id="castle01-m1"><span data-hf-id="hf-qfip" class="castle01-word" id="castle01-w1">実在の、</span></span><span data-hf-id="hf-nxmc" class="castle01-mask castle01-open" id="castle01-m2"><span data-hf-id="hf-3mgu" class="castle01-word" id="castle01-w2">福山。</span></span>
+      </div>
+    </div>
+
+    <!-- Track 2b — Scene 3/4 lockup: rule, wordmark payoff, label -->
+    <div data-hf-id="hf-i7df" class="clip castle01-layer" id="castle01-lockup" data-start="2.9" data-duration="2.1" data-track-index="2">
+      <div data-hf-id="hf-bl0j" class="castle01-lock">
+        <div data-hf-id="hf-wdcg" class="castle01-mark" id="castle01-mark">
+          福山<span data-hf-id="hf-bvws" class="castle01-accent">グランプリ</span>
+        </div>
+        <div data-hf-id="hf-57wa" class="castle01-foot">
+          <span data-hf-id="hf-d6yr" class="castle01-rule" id="castle01-rule"></span>
+          <span data-hf-id="hf-nhu8" class="castle01-label" id="castle01-label"
+                data-layout-allow-overlap="ロックアップの一部。ワードマークの下に敷く小見出しなので、「プリ」のディセンダの箱とは重なるが字面は重ならない">FUKUYAMA KART</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-400.woff2") format("woff2");
+      font-weight: 400 500;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-700.woff2") format("woff2");
+      font-weight: 600 700;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-900.woff2") format("woff2");
+      font-weight: 800 900;
+      font-style: normal;
+      font-display: block;
+    }
+
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      container-type: size;
+      font-family: "Noto Sans JP", sans-serif;
+      font-kerning: none;
+    }
+
+    .castle01-layer {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      pointer-events: none;
+    }
+
+    /* — dark plate: 75% navy band (scene 2) + downward gradient extension (scene 3+) — */
+    .castle01-band {
+      position: absolute;
+      left: 0;
+      top: 640px;
+      width: 1920px;
+      height: 200px;
+      background: rgba(11, 26, 42, 0.75);
+    }
+    .castle01-scrim {
+      position: absolute;
+      left: 0;
+      top: 300px;
+      width: 1920px;
+      height: 340px;
+      background: linear-gradient(
+        to bottom,
+        rgba(11, 26, 42, 0) 0%,
+        rgba(11, 26, 42, 0.42) 56%,
+        rgba(11, 26, 42, 0.75) 100%
+      );
+      opacity: 0;
+    }
+
+    /* — scene 2: 「実在の、」「福山。」 seated in the band, lower-left third — */
+    .castle01-line {
+      position: absolute;
+      left: 106px;
+      top: 678px;
+      white-space: nowrap;
+      font-size: 6.2cqw;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+    .castle01-mask {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+    }
+    .castle01-mask.castle01-open {
+      overflow: visible;
+    }
+    .castle01-word {
+      display: inline-block;
+      transform-origin: 0% 100%;
+    }
+
+    /* — scene 3/4: rule + wordmark payoff + mono-treatment label — */
+    .castle01-lock {
+      position: absolute;
+      left: 106px;
+      top: 578px;
+      width: 1340px;
+    }
+    .castle01-mark {
+      font-size: 10.2cqw;
+      font-weight: 900;
+      line-height: 0.88;
+      letter-spacing: -0.04em;
+      color: #ffffff;
+      white-space: nowrap;
+      transform-origin: 0% 100%;
+    }
+    .castle01-accent {
+      color: #ffd83d;
+    }
+    .castle01-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 24px;
+      margin-top: 26px;
+    }
+    .castle01-rule {
+      display: block;
+      width: 36px;
+      height: 2px;
+      background: #ffd83d;
+      transform-origin: 0% 50%;
+    }
+    .castle01-label {
+      display: block;
+      font-size: 1.15cqw;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #c9d6e4;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var DUR = 5;
+      var el = function (id) {
+        return document.getElementById(id);
+      };
+
+      var band = el("castle01-band");
+      var scrim = el("castle01-scrim");
+      var m1 = el("castle01-m1");
+      var m2 = el("castle01-m2");
+      var w1 = el("castle01-w1");
+      var w2 = el("castle01-w2");
+      var rule = el("castle01-rule");
+      var mark = el("castle01-mark");
+      var label = el("castle01-label");
+
+      /* ONE tempo grid drives every onset (kinetic-beat-slam: shared beat array). */
+      var PULSE = 0.1;
+      var BAND_IN = PULSE * 18; // 1.80 — scene 2: band wipes up
+      var W1 = PULSE * 19; // 1.90 — beat 1 「実在の、」
+      var W2 = PULSE * 22; // 2.20 — beat 2 「福山。」
+      var OUT1 = PULSE * 25.6; // 2.56 — waterfall word-rip begins
+      var OUT2 = PULSE * 26.0; // 2.60 — second word, staggered
+      var SCRIM = PULSE * 28.5; // 2.85 — plate extends upward for the payoff
+      var CUT = PULSE * 29; // 2.90 — HARD CUT, scene 3 begins
+      var POP = PULSE * 38; // 3.80 — scene 4: wordmark payoff
+      var LABEL = PULSE * 42; // 4.20 — chrome label
+
+      var tl = gsap.timeline({ paused: true });
+
+      /* ---- Scene 1 (0.0–1.8s): footage alone, zero type. Collapsed start states. ---- */
+      tl.set(band, { clipPath: "inset(100% 0% 0% 0%)" }, 0);
+      tl.set(scrim, { opacity: 0 }, 0);
+      tl.set([m1, m2], { x: 0, opacity: 1 }, 0);
+
+      /* ---- Scene 2 (1.8–2.9s): band wipes up from below, two per-word beats land in it ---- */
+      tl.fromTo(
+        band,
+        { clipPath: "inset(100% 0% 0% 0%)" },
+        { clipPath: "inset(0% 0% 0% 0%)", duration: 0.42, ease: "power3.out" },
+        BAND_IN
+      );
+
+      // beat 1 — bottom-up masked rise, blur resolving sharp
+      tl.fromTo(
+        w1,
+        { yPercent: 70, opacity: 0, filter: "blur(14px)" },
+        { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.46, ease: "power4.out" },
+        W1
+      );
+
+      // beat 2 — oversized word scaling down to measure (distinct axis + ease)
+      tl.fromTo(
+        w2,
+        { scale: 1.45, opacity: 0, filter: "blur(12px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.44, ease: "expo.out" },
+        W2
+      );
+
+      /* ---- Scene 3 (2.9–3.8s): waterfall word-rip into a HARD CUT, then the rule draws ---- */
+      tl.fromTo(m1, { x: 0 }, { x: -230, duration: 0.34, ease: "power4.in" }, OUT1);
+      tl.fromTo(m2, { x: 0 }, { x: -230, duration: 0.34, ease: "power4.in" }, OUT2);
+      tl.to(m1, { opacity: 0, duration: 0.18, ease: "power1.in" }, CUT - 0.22);
+      tl.to(m2, { opacity: 0, duration: 0.18, ease: "power1.in" }, CUT - 0.18);
+      tl.set([m1, m2], { opacity: 0 }, CUT);
+
+      // the dark plate grows upward so the payoff has its own ground
+      tl.fromTo(scrim, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, SCRIM);
+
+      // 36x2 yellow rule stub drawn left -> right on the cleared baseline
+      tl.fromTo(rule, { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, CUT);
+
+      /* ---- Scene 4 (3.8–5.0s): spring-pop payoff out of the rule, then HELD ---- */
+      tl.fromTo(
+        mark,
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.62, ease: "power3.out" },
+        POP
+      );
+      tl.fromTo(
+        label,
+        { x: -14, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+        LABEL
+      );
+
+      // pin the timeline to the full frame duration (no idle loop — the hold is dead still)
+      var span = { v: 0 };
+      tl.to(span, { v: 1, duration: DUR, ease: "none" }, 0);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["01-castle"] = tl;
+      tl.seek(0);
+    })();
+  </script>
+</template>

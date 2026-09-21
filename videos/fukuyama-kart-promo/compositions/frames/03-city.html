@@ -1,0 +1,245 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-400.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-700.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-900.woff2") format("woff2");
+      font-weight: 900;
+      font-style: normal;
+      font-display: block;
+    }
+
+    /* Frame root - styled by #root, never a class (subcomposition_root_styled_by_class).
+       z-index lifts the frame above the approved video, which assemble-index hoists to
+       the host root AFTER the frame clip (later DOM order would otherwise cover it). */
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 5;
+      container-type: size;
+      font-family: "Noto Sans JP";
+      color: #ffffff;
+    }
+
+    /* Full-bleed ground: the background-role grade over city.mp4 (~30% dim, deeper at
+       the edges), authored as a clip layer - never as a background on #root. */
+    #f03-city-ground {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(
+          122% 80% at 50% 40%,
+          rgba(11, 26, 42, 0.08) 0%,
+          rgba(11, 26, 42, 0.3) 62%,
+          rgba(11, 26, 42, 0.54) 100%
+        ),
+        rgba(11, 26, 42, 0.16);
+    }
+
+    /* Scene 2 scrim - ink-black rising from the bottom edge; solid across the lower
+       ~35%, soft tail above so the type never sits on raw footage. */
+    #f03-city-scrim {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 58cqh;
+      background: linear-gradient(
+        to top,
+        rgba(11, 26, 42, 0.96) 0%,
+        rgba(11, 26, 42, 0.92) 30%,
+        rgba(11, 26, 42, 0.84) 52%,
+        rgba(11, 26, 42, 0.58) 74%,
+        rgba(11, 26, 42, 0.22) 90%,
+        rgba(11, 26, 42, 0) 100%
+      );
+    }
+
+    /* Type stage: asymmetric 60/40, statement anchored left of centre, clear of the
+       bottom 17% caption band (the block runs y ~638-770 on a 1080 canvas). */
+    #f03-city-stage {
+      position: absolute;
+      left: 8cqw;
+      top: 60cqh;
+      width: 84cqw;
+      height: 12cqh;
+    }
+    #f03-city-rule {
+      position: absolute;
+      left: 8cqw;
+      top: 55.4cqh;
+      width: 36px;
+      height: 2px;
+      background: #ffd83d;
+      transform-origin: 0% 50%;
+    }
+    /* Both statements share one box so the hard cut swaps them in the exact same place. */
+    .f03-city-line {
+      position: absolute;
+      left: 0;
+      top: 0;
+      white-space: nowrap;
+      font-weight: 900;
+      font-size: 6.4cqw;
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      /* 初期状態は opacity で持つ。visibility は HyperFrames のランタイムが
+         クリップの表示/非表示に使っているので、ここで visible を書き込むと
+         フレームの窓を過ぎてもこの行が消えなくなる。 */
+      opacity: 0;
+    }
+    .f03-city-tok {
+      display: inline-block;
+    }
+    .f03-city-accent {
+      color: #ffd83d;
+    }
+
+    /* Attribution - the legal credit. Sized above the label role, left margin at pad-x,
+       baseline above the caption band, held unbroken once it lands. */
+    #f03-city-credit {
+      position: absolute;
+      left: 5.5cqw;
+      top: 77.5cqh;
+      white-space: nowrap;
+      font-weight: 400;
+      font-size: 1.15cqw;
+      line-height: 1.5;
+      letter-spacing: 0.06em;
+      color: #c9d6e4;
+    }
+  </style>
+
+  <div data-hf-id="hf-oi6e" id="root" data-composition-id="03-city" data-width="1920" data-height="1080">
+    <!-- approved frame video hoisted by assemble-index -->
+
+    <div data-hf-id="hf-x8j0" id="f03-city-ground" class="clip f03-city-ground" data-start="0" data-duration="4.5" data-track-index="1"></div>
+
+    <div data-hf-id="hf-mzyd" id="f03-city-scrim" class="clip f03-city-scrim" data-start="0" data-duration="4.5" data-track-index="2"></div>
+
+    <div data-hf-id="hf-zfik" id="f03-city-rule" class="clip f03-city-rule" data-start="0" data-duration="4.5" data-track-index="3"></div>
+
+    <div data-hf-id="hf-zxqj" id="f03-city-stage" class="clip f03-city-stage" data-start="0" data-duration="4.5" data-track-index="4">
+      <div data-hf-id="hf-i8q8" id="f03-city-line-a" class="f03-city-line"><span data-hf-id="hf-4t30" id="f03-city-tok-1" class="f03-city-tok">この</span><span data-hf-id="hf-59l7" id="f03-city-tok-2" class="f03-city-tok">街</span><span data-hf-id="hf-yqj7" id="f03-city-tok-3" class="f03-city-tok">は、</span></div>
+      <div data-hf-id="hf-t47v" id="f03-city-line-b" class="f03-city-line"><span data-hf-id="hf-eysl">つくり物</span><span data-hf-id="hf-cd3g" class="f03-city-accent">じゃない。</span></div>
+    </div>
+
+    <div data-hf-id="hf-s4lm" id="f03-city-credit" class="clip f03-city-credit" data-start="0" data-duration="4.5" data-track-index="5">国土交通省 PLATEAU 3D都市モデル / 福山市 2020年度</div>
+  </div>
+
+  <script>
+    (function () {
+      var DUR = 4.5;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+
+      var lineA = document.getElementById("f03-city-line-a");
+      var lineB = document.getElementById("f03-city-line-b");
+
+      /* ---- Scene 1 (0.0-1.3s): city.mp4 alone, full bleed. Type parked off. ---- */
+      gsap.set("#f03-city-scrim", { opacity: 0 });
+      gsap.set("#f03-city-rule", { opacity: 0 });
+      gsap.set("#f03-city-credit", { opacity: 0 });
+      gsap.set(["#f03-city-tok-1", "#f03-city-tok-2", "#f03-city-tok-3"], { opacity: 0 });
+
+      /* ---- discrete-text-sequence: whole-line state swap at hard thresholds ----
+         A sparse state array plus a reverse search on every onUpdate. The display
+         JUMPS between states with nothing tweened across the seam - that instant cut
+         at 2.60s IS the signature move of the fixed-line word swap. */
+      var SEQUENCE = [
+        { t: 0.0, a: 0, b: 0 },
+        { t: 1.36, a: 1, b: 0 },
+        { t: 2.6, a: 0, b: 1 }
+      ];
+      function stateAt(time) {
+        for (var i = SEQUENCE.length - 1; i >= 0; i--) {
+          if (time >= SEQUENCE[i].t) return SEQUENCE[i];
+        }
+        return SEQUENCE[0];
+      }
+      var driver = { t: 0 };
+      tl.to(
+        driver,
+        {
+          t: DUR,
+          duration: DUR,
+          ease: "none",
+          onUpdate: function () {
+            var s = stateAt(driver.t);
+            lineA.style.opacity = s.a ? "1" : "0";
+            lineB.style.opacity = s.b ? "1" : "0";
+          }
+        },
+        0
+      );
+
+      /* ---- Scene 2 (1.3-2.6s): scrim rises, accent rule draws, per-token reveal ---- */
+      tl.fromTo(
+        "#f03-city-scrim",
+        { opacity: 0, yPercent: 24 },
+        { opacity: 1, yPercent: 0, duration: 0.52, ease: "power2.out" },
+        1.28
+      );
+      tl.fromTo(
+        "#f03-city-rule",
+        { scaleX: 0, opacity: 0 },
+        { scaleX: 1, opacity: 1, duration: 0.38, ease: "power3.out" },
+        1.34
+      );
+
+      /* kinetic-beat-slam: ONE tempo grid, a DIFFERENT entrance axis per token. */
+      var PULSE = 0.13;
+      var T_TEXT = 1.4;
+      var BEATS = [T_TEXT, T_TEXT + PULSE, T_TEXT + PULSE * 2];
+
+      tl.fromTo(
+        "#f03-city-tok-1",
+        { scale: 1.32, filter: "blur(14px)", opacity: 0 },
+        { scale: 1, filter: "blur(0px)", opacity: 1, duration: 0.44, ease: "power4.out" },
+        BEATS[0]
+      );
+      tl.fromTo(
+        "#f03-city-tok-2",
+        { y: 64, rotation: 5, opacity: 0 },
+        { y: 0, rotation: 0, opacity: 1, duration: 0.42, ease: "circ.out" },
+        BEATS[1]
+      );
+      tl.fromTo(
+        "#f03-city-tok-3",
+        { x: -96, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.4, ease: "expo.out" },
+        BEATS[2]
+      );
+
+      /* ---- Scene 3 (2.6-3.7s): the hard cut, owned entirely by the driver above -
+         no fade, no blur, no scale across the seam. Only the city keeps moving. ---- */
+
+      /* ---- Scene 4 (3.7-4.5s): attribution fades in and HOLDS to the last frame. ---- */
+      tl.fromTo(
+        "#f03-city-credit",
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+        3.7
+      );
+
+      window.__timelines["03-city"] = tl;
+      tl.seek(0);
+    })();
+  </script>
+</template>

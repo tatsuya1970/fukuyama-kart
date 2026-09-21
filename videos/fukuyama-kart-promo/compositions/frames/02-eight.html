@@ -1,0 +1,221 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-400.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-700.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      container-type: size;
+      font-family: "Noto Sans JP", sans-serif;
+    }
+
+    /* --- full-bleed ground layer, riding over the approved footage --- */
+    .f02-eight-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(11, 26, 42, 0.34) 0%,
+        rgba(11, 26, 42, 0.04) 36%,
+        rgba(11, 26, 42, 0.2) 62%,
+        rgba(11, 26, 42, 0.62) 100%
+      );
+      opacity: 0.5;
+    }
+
+    .f02-eight-layer {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* --- the navy plate --- */
+    .f02-eight-band {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 9.6cqw;
+      height: 8.8cqw;
+      background: rgba(11, 26, 42, 0.75);
+      border-top: 1px solid #2b4055;
+      transform-origin: 0% 50%;
+      will-change: transform;
+    }
+
+    /* --- the eight driver chips --- */
+    .f02-eight-chips {
+      position: absolute;
+      left: 5.5cqw;
+      bottom: 9.6cqw;
+      height: 8.8cqw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.6cqw;
+    }
+    .f02-eight-row {
+      display: flex;
+      align-items: center;
+      gap: 1.3cqw;
+    }
+    .f02-eight-chip {
+      width: 4.3cqw;
+      height: 4.3cqw;
+      border-radius: 50%;
+      box-sizing: border-box;
+      border: 3px solid #ffffff;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+    .f02-eight-rule {
+      height: 2px;
+      background: #ffd83d;
+      transform-origin: 0% 50%;
+      will-change: transform;
+    }
+
+    /* --- the copy, right of the chip row --- */
+    .f02-eight-copy {
+      position: absolute;
+      left: 52cqw;
+      right: 5.5cqw;
+      bottom: 9.6cqw;
+      height: 8.8cqw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 0.35cqw;
+    }
+    .f02-eight-h2 {
+      font-size: 4.1cqw;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: #ffd83d;
+      transform-origin: 0% 50%;
+      will-change: transform;
+      white-space: nowrap;
+    }
+    .f02-eight-label {
+      font-size: 1.4cqw;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.14em;
+      color: #c9d6e4;
+      will-change: transform;
+      white-space: nowrap;
+    }
+  </style>
+
+  <div data-hf-id="hf-j4j7" id="root" data-composition-id="02-eight" data-width="1920" data-height="1080">
+    <!-- approved frame video hoisted by assemble-index -->
+
+    <div data-hf-id="hf-t2r9" id="f02-eight-scrim" class="clip f02-eight-scrim" data-start="0" data-duration="3.5" data-track-index="1"></div>
+
+    <div data-hf-id="hf-2ah6" id="f02-eight-strip" class="clip f02-eight-layer" data-start="0.9" data-duration="2.6" data-track-index="2">
+      <div data-hf-id="hf-iwqa" id="f02-eight-band" class="f02-eight-band"></div>
+      <div data-hf-id="hf-kkfc" class="f02-eight-chips">
+        <div data-hf-id="hf-67rp" class="f02-eight-row">
+          <div data-hf-id="hf-o3cb" class="f02-eight-chip" style="background: #e63946"></div>
+          <div data-hf-id="hf-p0yt" class="f02-eight-chip" style="background: #d6336c"></div>
+          <div data-hf-id="hf-gual" class="f02-eight-chip" style="background: #27476e"></div>
+          <div data-hf-id="hf-5vy6" class="f02-eight-chip" style="background: #e07a5f"></div>
+          <div data-hf-id="hf-ewp1" class="f02-eight-chip" style="background: #6b4423"></div>
+          <div data-hf-id="hf-zei1" class="f02-eight-chip" style="background: #3f7d3f"></div>
+          <div data-hf-id="hf-wywg" class="f02-eight-chip" style="background: #e9eef2"></div>
+          <div data-hf-id="hf-p30l" class="f02-eight-chip" style="background: #1b1b1b"></div>
+        </div>
+        <div data-hf-id="hf-z7vm" id="f02-eight-rule" class="f02-eight-rule"></div>
+      </div>
+    </div>
+
+    <div data-hf-id="hf-dbyt" id="f02-eight-copy" class="clip f02-eight-layer" data-start="2.3" data-duration="1.2" data-track-index="3">
+      <div data-hf-id="hf-fe3c" class="f02-eight-copy">
+        <div data-hf-id="hf-vuc5" id="f02-eight-h2" class="f02-eight-h2">最大8人</div>
+        <div data-hf-id="hf-t1s7" id="f02-eight-label" class="f02-eight-label">オンライン対戦</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      var chips = gsap.utils.toArray("#f02-eight-strip .f02-eight-chip");
+
+      /* Seek-safe resting states for everything that arrives later. */
+      gsap.set("#f02-eight-band", { scaleX: 0 });
+      gsap.set(chips, { scale: 0, opacity: 0, y: 16 });
+      gsap.set("#f02-eight-rule", { scaleX: 0 });
+      gsap.set("#f02-eight-h2", { scale: 0.72, opacity: 0, y: 10 });
+      gsap.set("#f02-eight-label", { opacity: 0, y: 12 });
+
+      /* Scene 1 (0.0-0.9) - grid.mp4 alone, the eight karts launching. No type.
+         The ground scrim deepens on the last beat to bed the plate. */
+      tl.fromTo(
+        "#f02-eight-scrim",
+        { opacity: 0.5 },
+        { opacity: 1, duration: 0.5, ease: "power2.out" },
+        0.74
+      );
+
+      /* Scene 2 (0.9-2.3) - the navy plate wipes in from the left, then the
+         eight driver chips land left-to-right (per-item stagger, spring-pop
+         entrance on a smooth power3 settle, no overshoot). */
+      tl.fromTo(
+        "#f02-eight-band",
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.52, ease: "power3.out" },
+        0.9
+      );
+      chips.forEach(function (el, i) {
+        tl.fromTo(
+          el,
+          { scale: 0, opacity: 0, y: 16 },
+          { scale: 1, opacity: 1, y: 0, duration: 0.34, ease: "power3.out" },
+          1.12 + i * 0.125
+        );
+      });
+
+      /* Scene 3 (2.3-3.5) - on the beat the eighth chip lands, the headline
+         spring-pops to the right of the row, the label fades a half-beat
+         later, and a hairline accent rule draws under the eight to bind them
+         into one set. Held to the end. */
+      tl.fromTo(
+        "#f02-eight-h2",
+        { scale: 0.72, opacity: 0, y: 10 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.44, ease: "power3.out" },
+        2.3
+      );
+      tl.fromTo(
+        "#f02-eight-label",
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+        2.56
+      );
+      tl.fromTo(
+        "#f02-eight-rule",
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.5, ease: "power3.out" },
+        2.86
+      );
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["02-eight"] = tl;
+      tl.seek(0);
+    })();
+  </script>
+</template>

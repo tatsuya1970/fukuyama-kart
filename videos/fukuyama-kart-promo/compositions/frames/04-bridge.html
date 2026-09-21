@@ -1,0 +1,159 @@
+<template>
+  <div data-hf-id="hf-yw7n" id="root" data-composition-id="04-bridge" data-width="1920" data-height="1080">
+    <!-- Scene 1-3 ground: the approved footage, full-bleed for the whole frame.
+         Hoisted to the host root by assemble-index.mjs. -->
+    <!-- approved frame video hoisted by assemble-index -->
+
+    <!-- full-bleed frame ground (transparent over the footage) + lower-left seating wash -->
+    <div data-hf-id="hf-v1uv" class="clip" id="bridge-ground" data-start="0" data-duration="4.5" data-track-index="1">
+      <div data-hf-id="hf-67d2" id="bridge-wash"></div>
+    </div>
+
+    <!-- Scene 2/3: the nameplate. Lower-left third, clear of the 芦田川大橋 gantry sign. -->
+    <div data-hf-id="hf-2qat" class="clip" id="bridge-plate-layer" data-start="2.1" data-duration="2.4" data-track-index="2">
+      <div data-hf-id="hf-3i0t" id="bridge-plate">
+        <div data-hf-id="hf-msbx" id="bridge-rule"></div>
+        <h2 data-hf-id="hf-ae1s" id="bridge-name">芦田川大橋</h2>
+        <div data-hf-id="hf-tpli" id="bridge-label">Ashidagawa Ohashi Bridge</div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-400.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-700.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      container-type: size;
+      font-family: "Noto Sans JP", sans-serif;
+    }
+
+    #bridge-ground {
+      position: absolute;
+      inset: 0;
+      background: transparent;
+    }
+
+    /* legibility seating for the nameplate only — footage stays the ground */
+    #bridge-wash {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 52cqw;
+      height: 44cqh;
+      background: linear-gradient(
+        to top right,
+        rgba(11, 26, 42, 0.42) 0%,
+        rgba(11, 26, 42, 0.18) 45%,
+        rgba(11, 26, 42, 0) 100%
+      );
+    }
+
+    #bridge-plate-layer {
+      position: absolute;
+      inset: 0;
+    }
+
+    #bridge-plate {
+      position: absolute;
+      left: 5.5cqw;
+      bottom: 20.5cqh;
+      display: inline-block;
+      padding: 1.8cqw 2.6cqw 1.9cqw 2.2cqw;
+      background: rgba(11, 26, 42, 0.75);
+      border-radius: 0;
+      will-change: transform, opacity;
+    }
+
+    #bridge-rule {
+      width: 36px;
+      height: 2px;
+      background: #FFD83D;
+      margin-bottom: 1.2cqw;
+    }
+
+    #bridge-name {
+      margin: 0;
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 4.5cqw;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      white-space: nowrap;
+    }
+
+    #bridge-label {
+      margin-top: 0.9cqw;
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 1cqw;
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #C9D6E4;
+      white-space: nowrap;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var root = document.querySelector('[data-composition-id="04-bridge"]');
+      if (!root) return;
+
+      var wash = root.querySelector("#bridge-wash");
+      var plate = root.querySelector("#bridge-plate");
+      var label = root.querySelector("#bridge-label");
+
+      var tl = gsap.timeline({ paused: true });
+
+      // hold spine — the footage carries 0.0-4.5s on its own
+      tl.to({}, { duration: 4.5 }, 0);
+
+      // Scene 2 (2.1s) — the frame's one move: the nameplate slide-up crossfade,
+      // landing on the beat the karts pass between the pylons. The seating wash
+      // crossfades in with it, so Scene 1 is footage and nothing else.
+      tl.fromTo(
+        wash,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.6, ease: "power2.out" },
+        2.1
+      );
+      tl.fromTo(
+        plate,
+        { y: 36, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
+        2.1
+      );
+
+      // Scene 3 (3.1s) — the romanization fades up under it, then everything is held.
+      tl.fromTo(
+        label,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.45, ease: "power1.out" },
+        3.1
+      );
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["04-bridge"] = tl;
+    })();
+  </script>
+</template>

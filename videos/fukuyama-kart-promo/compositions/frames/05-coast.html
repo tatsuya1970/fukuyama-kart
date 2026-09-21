@@ -1,0 +1,257 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Noto Sans JP";
+      font-style: normal;
+      font-weight: 400;
+      font-display: block;
+      src: url("assets/fonts/NotoSansJP-400.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      font-style: normal;
+      font-weight: 700;
+      font-display: block;
+      src: url("assets/fonts/NotoSansJP-700.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      font-style: normal;
+      font-weight: 900;
+      font-display: block;
+      src: url("assets/fonts/NotoSansJP-900.woff2") format("woff2");
+    }
+
+    #root {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      container-type: size;
+      font-family: "Noto Sans JP", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* full-bleed layers -------------------------------------------------- */
+    .f05coast-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    /* subtle navy scrim: seats the plate over the busy right hillside and the
+       credit over the bright sea. the footage stays the ground. */
+    .f05coast-vignette {
+      background:
+        radial-gradient(118% 88% at 100% 0%, rgba(11, 26, 42, 0.44) 0%, rgba(11, 26, 42, 0) 58%),
+        radial-gradient(96% 78% at 0% 100%, rgba(11, 26, 42, 0.34) 0%, rgba(11, 26, 42, 0) 56%);
+    }
+
+    /* counter cluster - upper right (rule of thirds) ---------------------- */
+    .f05coast-stat {
+      position: absolute;
+      top: 6.5cqw;
+      right: 5.5cqw;
+      width: 22cqw;
+    }
+    .f05coast-plate {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 26, 42, 0.86);
+      border-top: 1px solid #2b4055;
+      transform-origin: 100% 50%;
+      transform: scaleX(0);
+    }
+    .f05coast-stat-inner {
+      position: relative;
+      padding: 2.2cqw 2.2cqw 2.4cqw;
+      text-align: right;
+    }
+    .f05coast-label {
+      font-size: 1.5cqw;
+      font-weight: 700;
+      line-height: 1.5;
+      letter-spacing: 0.14em;
+      margin-right: -0.14em;
+      color: #c9d6e4;
+      white-space: nowrap;
+    }
+    .f05coast-label span {
+      display: inline-block;
+      opacity: 0;
+    }
+    .f05coast-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: 0.9cqw;
+      margin-top: 1.1cqw;
+    }
+    .f05coast-num {
+      display: inline-block;
+      width: 13cqw;
+      text-align: right;
+      font-size: 5.5cqw;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: #ffd83d;
+      font-variant-numeric: tabular-nums;
+      transform-origin: 100% 100%;
+      opacity: 0;
+    }
+    .f05coast-km {
+      display: inline-block;
+      font-size: 2.2cqw;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      opacity: 0;
+    }
+
+    /* credit line - lower left, over the open sea ------------------------- */
+    .f05coast-credit {
+      position: absolute;
+      left: 5.5cqw;
+      top: 39.6cqw;
+      padding: 1.5cqw 1.8cqw 1.6cqw;
+      background: rgba(11, 26, 42, 0.8);
+      border-top: 1px solid #2b4055;
+      opacity: 0;
+    }
+    .f05coast-stub {
+      width: 36px;
+      height: 2px;
+      background: #ffd83d;
+      transform-origin: 0% 50%;
+      transform: scaleX(0);
+      margin-bottom: 0.9cqw;
+    }
+    .f05coast-credit-text {
+      font-size: 1.4cqw;
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: 0.14em;
+      margin-right: -0.14em;
+      color: #c9d6e4;
+      white-space: nowrap;
+      opacity: 0;
+    }
+  </style>
+
+  <div data-hf-id="hf-yuf7" id="root" data-composition-id="05-coast" data-width="1920" data-height="1080">
+    <!-- approved frame video hoisted by assemble-index -->
+
+    <div data-hf-id="hf-rfdw" class="f05coast-layer f05coast-vignette clip" data-start="0" data-duration="4" data-track-index="1"></div>
+
+    <div data-hf-id="hf-5e2t" class="f05coast-layer clip" data-start="0" data-duration="4" data-track-index="2">
+      <div data-hf-id="hf-it62" class="f05coast-stat">
+        <div data-hf-id="hf-fhu8" class="f05coast-plate"></div>
+        <div data-hf-id="hf-1pzd" class="f05coast-stat-inner">
+          <div data-hf-id="hf-41eu" class="f05coast-label"><span data-hf-id="hf-33kb" class="f05coast-w1">福山</span><span data-hf-id="hf-8eu3" class="f05coast-w2">駅</span><span data-hf-id="hf-fcih" class="f05coast-w3">から</span></div>
+          <div data-hf-id="hf-jgbs" class="f05coast-row">
+            <span data-hf-id="hf-w0hh" class="f05coast-num">0.0</span><span data-hf-id="hf-8b4b" class="f05coast-km">km</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-hf-id="hf-4mf0" class="f05coast-layer clip" data-start="0" data-duration="4" data-track-index="3">
+      <div data-hf-id="hf-udmj" class="f05coast-credit">
+        <div data-hf-id="hf-r7k0" class="f05coast-stub"></div>
+        <div data-hf-id="hf-xxbd" class="f05coast-credit-text">県道22号 → 鞆の浦</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var root = document.querySelector('[data-composition-id="05-coast"]');
+      var q = function (sel) {
+        return root.querySelector(sel);
+      };
+
+      var plate = q(".f05coast-plate");
+      var w1 = q(".f05coast-w1");
+      var w2 = q(".f05coast-w2");
+      var w3 = q(".f05coast-w3");
+      var num = q(".f05coast-num");
+      var km = q(".f05coast-km");
+      var credit = q(".f05coast-credit");
+      var stub = q(".f05coast-stub");
+      var creditText = q(".f05coast-credit-text");
+
+      var F = 1 / 60;
+      var tl = gsap.timeline({ paused: true });
+
+      /* --- counter proxy (value-scaled counter) ------------------------- */
+      var state = { value: 0 };
+      var renderValue = function () {
+        num.textContent = state.value.toFixed(1);
+      };
+      /* baseline so a rewind always re-renders 0.0 */
+      tl.to(state, { value: 0, duration: 0.001, onUpdate: renderValue }, 0);
+
+      /* --- Scene 1 (0.0-1.0s): footage only, zero text ------------------ */
+      /* nothing authored: every text layer starts at opacity 0 / scaleX 0 */
+
+      /* --- Scene 2 (1.0-2.3s): plate, label cascade, counter ------------ */
+      /* navy plate wipes in from the right edge */
+      tl.fromTo(plate, { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 0.95);
+
+      /* per-word staggered reveal (waterfall-entry: binary opacity + y whip) */
+      var t0 = 1.16;
+      tl.set(w1, { opacity: 1, y: 60 }, t0);
+      tl.to(w1, { y: 0, duration: 0.18, ease: "power4.out" }, t0);
+
+      var t1 = t0 + 0.18 + 2 * F;
+      tl.set(w2, { opacity: 1, y: 45 }, t1);
+      tl.to(w2, { y: 0, duration: 0.15, ease: "power4.out" }, t1);
+
+      var t2 = t1 + 0.15 - F;
+      tl.set(w3, { opacity: 1, y: 40 }, t2);
+      tl.to(w3, { y: 0, duration: 0.14, ease: "power4.out" }, t2);
+
+      /* value-scaled counter: 0 -> 20.7 once; value + scale share ease and timing */
+      var COUNT_AT = 1.25;
+      var COUNT_DUR = 0.9;
+      var COUNT_EASE = "power3.out";
+      tl.set(num, { opacity: 1 }, COUNT_AT);
+      tl.to(
+        state,
+        { value: 20.7, duration: COUNT_DUR, ease: COUNT_EASE, onUpdate: renderValue },
+        COUNT_AT
+      );
+      tl.fromTo(num, { scale: 0.55 }, { scale: 1, duration: COUNT_DUR, ease: COUNT_EASE }, COUNT_AT);
+
+      /* suffix lands with the number, never during the count */
+      tl.fromTo(
+        km,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.34, ease: "back.out(1.6)" },
+        COUNT_AT + COUNT_DUR
+      );
+
+      /* --- Scene 3 (2.3-4.0s): number held, credit fades in ------------- */
+      tl.fromTo(credit, { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 2.5);
+      tl.fromTo(stub, { scaleX: 0 }, { scaleX: 1, duration: 0.28, ease: "power3.out" }, 2.58);
+      tl.fromTo(
+        creditText,
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+        2.66
+      );
+      /* from 3.16s only the footage moves - the counter never returns. */
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["05-coast"] = tl;
+      tl.seek(0);
+    })();
+  </script>
+</template>
