@@ -17,7 +17,7 @@ import { rng, lerp, clamp, assetUrl, WAYPOINTS, llToXZ } from './geo';
 import { resolveQuality, saveQuality, allPresets, type QualityLevel } from './quality';
 import { t, isJa, setLang, applyDomLang } from './i18n';
 
-// 福山駅から鞆の浦の常夜燈まで 25.9km を走り切る一本道 (周回しない)。
+// 福山駅から鞆の浦の常夜燈まで 20.8km を走り切る一本道 (周回しない)。
 // Track は course_path.json の open を見て開いた経路として扱う (src/track.ts)。
 // LAPS は「ゴールした時点で lap が 2 になる」という約束のためだけに残してある。
 const LAPS = 1;
@@ -312,7 +312,9 @@ async function main() {
     state = 'finish';
     audio.finish();
     hud.showCenter(t('race.finish'), 3);
-    setTimeout(showResults, 2500);
+    // 素材撮り (?rec=1) ではリザルト画面を出さない。実時間のタイマーなので、
+    // 1 コマずつ撮っている間に 2.5 秒が過ぎてゴール直後の画がふさがれてしまう。
+    if (!recMode) setTimeout(showResults, 2500);
   }
   function showResults() {
     const sorted = [...karts].sort((a, b) => (a.finished && b.finished) ? a.finishTime - b.finishTime : a.finished ? -1 : b.finished ? 1 : b.progress - a.progress);
