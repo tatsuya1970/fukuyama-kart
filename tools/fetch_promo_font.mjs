@@ -24,7 +24,7 @@ const COPY = [
   'この街はつくり物じゃない', '国土交通省 PLATEAU 3D都市モデル 福山市 2020年度',
   '芦田川大橋', 'Ashidagawa Ohashi Bridge',
   '福山駅から', 'km', '県道22号', '鞆の浦',
-  'GOAL', '鞆港 常夜燈', '1859年 高さ11m', 'Tomo Port Joyato',
+  'GOAL', '鞆の浦 常夜燈', '1859年 高さ11m', 'Tomonoura Joyato',
   'tatsuya1970.github.io/fukuyama-kart',
   'ブラウザでいますぐ', 'インストール不要',
 ].join('');

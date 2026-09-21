@@ -188,7 +188,7 @@ export function makeBannerTexture(kind: 'loop' | 'start' | 'goal' = 'loop'): THR
   ctx.fillStyle = '#fff'; ctx.font = 'italic bold 120px "Segoe UI",sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.fillText(kind === 'goal' ? 'GOAL' : kind === 'start' ? 'START' : 'FUKUYAMA KART', 512, 118);
   ctx.font = 'bold 44px sans-serif'; ctx.fillStyle = '#ffd83d';
-  const sub = kind === 'goal' ? '鞆港 常夜燈  Tomo Port Joyato'
+  const sub = kind === 'goal' ? '鞆の浦 常夜燈  Tomonoura Joyato'
     : kind === 'start' ? '福山グランプリ  福山駅  Fukuyama Sta.'
     : '福山グランプリ  START / FINISH';
   ctx.fillText(sub, 512, 196);

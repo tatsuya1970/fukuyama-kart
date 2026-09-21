@@ -168,7 +168,7 @@ Scene 3 (2.3–4.0s): 数字が確定して held（カウンタは二度と動�
 - focal: assets/goal.mp4
 - roles: goal.mp4 = background (full-bleed)
 - asset_candidates: assets/goal.mp4 — 鞆の浦・常夜燈へのゴール (5.0s)
-- onscreen: 「GOAL」→（入れ替え）「鞆港 常夜燈」/ 小さく「1859年・高さ11m ・ Tomo Port Joyato」
+- onscreen: 「GOAL」→（入れ替え）「鞆の浦 常夜燈」/ 小さく「1859年・高さ11m ・ Tomonoura Joyato」
 
 必ず伝える 3 点の最後。ゴールの瞬間に GOAL を出し、収まってから常夜燈の名前に**入れ替える**。
 築年と高さを添えて「実在の場所に着いた」ことを確かめさせる。
@@ -178,8 +178,8 @@ Adapt: 「ひとつの抑制された動きで出して静止させる」signatu
 
 Scene 1 (0.0–1.9s): `goal.mp4` のみ全面。常夜燈が正面に立ち上がってくる。文字ゼロ。
 Scene 2 (1.9–2.7s): ゴールをくぐる拍で、画面中央に display の「GOAL」が黄で spring-pop entrance（大きく、~55% 幅）。centered。
-Scene 3 (2.7–3.7s): 「GOAL」が **scale-swap** で縮みながら上へ退き、入れ替わりに h1「鞆港 常夜燈」が同じ中心に着地。下敷きは濃紺 75% の帯。
-Scene 4 (3.7–5.0s): その下に label で「1859年・高さ11m ・ Tomo Port Joyato」が fade。以後 held。
+Scene 3 (2.7–3.7s): 「GOAL」が **scale-swap** で縮みながら上へ退き、入れ替わりに h1「鞆の浦 常夜燈」が同じ中心に着地。下敷きは濃紺 75% の帯。
+Scene 4 (3.7–5.0s): その下に label で「1859年・高さ11m ・ Tomonoura Joyato」が fade。以後 held。
 
 ## Frame 7 — エンドカード
 

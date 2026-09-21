@@ -29,10 +29,11 @@ const MESHES = ['51335278', '51335279', '51335288', '51335289', '51335298', '513
 
 // ---------------- コース中心線 (道路上を通る探索済み経路) ----------------
 const coursePath = JSON.parse(readFileSync('data/course_path.json', 'utf8'));
-const centerline = coursePath.points.map((p, i) => [p[0], p[1], coursePath.elevated[i]]);
+const centerline = coursePath.points.map((p, i) => [p[0], p[1], coursePath.elevated[i], i]);
 
-/** 折れ線を空間ハッシュに載せて最近傍距離を高速に判定する */
-function makeIndex(points, cell = 100) {
+/** 折れ線を空間ハッシュに載せて最近傍距離を高速に判定する。
+ *  perPoint に (元の通し番号) => 許容距離 を渡すと、点ごとに違う距離で判定する。 */
+function makeIndex(points, cell = 100, perPoint = null) {
   const grid = new Map();
   points.forEach(([x, z], i) => {
     const k = `${Math.floor(x / cell)},${Math.floor(z / cell)}`;
@@ -44,13 +45,17 @@ function makeIndex(points, cell = 100) {
     for (let dj = -r; dj <= r; dj++) for (let di = -r; di <= r; di++) {
       const a = grid.get(`${ci + di},${cj + dj}`);
       if (!a) continue;
-      for (const i of a) if (Math.hypot(points[i][0] - x, points[i][1] - z) <= limit) return true;
+      for (const i of a) {
+        const lim = perPoint ? Math.min(limit, perPoint(points[i][3])) : limit;
+        if (Math.hypot(points[i][0] - x, points[i][1] - z) <= lim) return true;
+      }
     }
     return false;
   };
 }
 // 建物を除去する判定には地上区間だけを使う (高架の下は残す)
-const nearCourse = makeIndex(centerline.filter(p => !p[2]));
+const nearCourse = makeIndex(centerline.filter(p => !p[2]), 100,
+  i => (HALF_W ? HALF_W[i] : course.roadWidth / 2) + 2.5);
 // 高架区間は桁に当たる高い建物だけ除去する
 const nearElevated = makeIndex(centerline.filter(p => p[2]));
 const DECK_TOP = 15.5; // 標高 (T.P.) でのおおよその桁上面
@@ -76,9 +81,14 @@ const RAIL_CORRIDORS = [
   { name: 'jr', index: makeIndex(densify(rail.jr.path)), margin: 8 },
   { name: 'shinkansen', index: makeIndex(densify(rail.shinkansen.path)), margin: 8 },
 ];
-// コース路面の半幅 + 余裕。半幅は区間ごとに違うので、いちばん広い所で判定する
-// (建物を消しすぎるより、路面に残るほうが困るため)
-const COURSE_MARGIN = Math.max(...(coursePath.halfWidth ?? [course.roadWidth / 2])) + 2.5;
+// コース路面の半幅 + 余裕。半幅は区間ごとに違うので、その場所の半幅で判定する。
+// いちばん広い所 (国道2号の 10m) で一律に判定すると、幅 4.5m の市道沿いの建物まで
+// LOD2 から落ちる。落ちた建物は skipIds に入らないので LOD1 が素のグレー箱として
+// 描き直してしまい、消したはずの建物が路肩に戻ってくる (鞆の浦の常夜燈の手前で発生)。
+// src/buildings.ts の track.blocks(ring, 2.5, h) と同じ基準に揃えておく。
+const HALF_W = coursePath.halfWidth ?? null;
+const MAX_HALF = HALF_W ? Math.max(...HALF_W) : course.roadWidth / 2;
+const COURSE_MARGIN = MAX_HALF + 2.5;
 
 // ランドマーク (鞆の浦の常夜燈など専用モデルを置く所) と重なる建物は除く
 const LANDMARK_ZONES = Object.values(rail.landmarks).filter(l => l.excludeRadius > 0).map(l => { const [x, z] = toXZ(l.lat, l.lon); return { x, z, r: l.excludeRadius }; });
