@@ -868,7 +868,8 @@ async function main() {
         if (a.def.isPlayer || b.def.isPlayer) audio.bump();
       }
     }
-    // 列車との接触 (JR 山陽本線は踏切でコースと交わる)
+    // 列車との接触。今のコースは線路 2 か所とも高架の下をくぐるので当たらないが、
+    // 地上区間を通るコースに引き直したときのために残してある
     if (racing) {
       for (const k of karts) {
         if (k.spinTimer > 0 || k.invincible || !isLocal(k)) continue;

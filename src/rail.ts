@@ -1,7 +1,8 @@
 // 福山の鉄道 — 実在位置の線路と、実際に走る車両
-//   山陽新幹線:   福山駅の前後はずっと高架。福山城の石垣のすぐ南をかすめて走る
-//   JR 山陽本線:  福山駅を東西に貫く地上線。コースと踏切で交わるので、
-//                 列車に接触するとスピンする
+//   山陽新幹線:   在来線の高架のさらに上を走る二段高架 (15.5m)。福山城の石垣のすぐ南をかすめる
+//   JR 山陽本線:  福山駅を東西に貫く。福山駅は高架駅で、市内はほぼ全線が高架
+//                 (OSM の bridge=yes)。コースと交わる 2 か所 — 入船町の先と福山城の先 —
+//                 はどちらも高架の下をくぐるので踏切は無い。東の外れだけ地上に降りる
 import * as THREE from 'three';
 import railData from '../data/rail.json';
 import { llToXZ, lerp } from './geo';
@@ -37,7 +38,7 @@ function samplePath(pts: LL[], step: number): { p: THREE.Vector3; h: number }[] 
 
 /**
  * 両端に直線の延長を足す。車両は終端で折り返さず反対の端へ回るので、
- * その入れ替わりが駅や踏切の外で起きるようにするための引き込み線。
+ * その入れ替わりが駅やコースの外で起きるようにするための引き込み線。
  */
 function withTail(pts: { p: THREE.Vector3; h: number }[], tailStart: number, tailEnd: number) {
   const n = pts.length;
@@ -246,7 +247,7 @@ export interface RailSystem {
   group: THREE.Group;
   lines: { shinkansen: RailLine; jr: RailLine };
   update(dt: number): void;
-  /** 地上を走る電車・気動車に接触したか (踏切でコースと交わる) */
+  /** 地上を走る電車・気動車に接触したか (今のコースは高架の下をくぐるので当たらない) */
   hitTrain(x: number, z: number, r: number): boolean;
   /** 建物を除去すべき軌道敷か */
   blocksBuilding(ring: number[]): boolean;
@@ -256,7 +257,7 @@ export function buildRail(terrain: Terrain, track: Track): RailSystem {
   const group = new THREE.Group();
   const d = railData as any;
 
-  /** 踏切: コースの路面上なら路面の高さに合わせる */
+  /** 地上の線路がコースの路面に乗る所は路面の高さに合わせる (今のコースには無い) */
   const onCourse = (x: number, z: number) => {
     const nr = track.nearest(x, z, -1, false);
     return nr.idx >= 0 && nr.dist < 40 && Math.abs(nr.lateral) < track.hw[nr.idx] + 5 ? nr.idx : -1;
@@ -271,7 +272,7 @@ export function buildRail(terrain: Terrain, track: Track): RailSystem {
    * 並走区間の線路を路面の外へ出す。JR 山陽本線は駅前の通りのすぐ脇を走るが、
    * コースは道路の中央に敷いているので、OSM の線形のままだと線路が
    * 路面に乗ってしまう (実測で中心から 7-10m)。コースと平行な所だけ中心から CLEAR m
-   * まで横へずらし、ずらし量は前後でならす。踏切 (交差角が大きい所) は動かさない。
+   * まで横へずらし、ずらし量は前後でならす。高架区間 (h > 1.5) は道路をまたぐので動かさない。
    */
   const clearOf = (i: number) => track.hw[i] + 6.5;
   const keepOffCourse = (raw: { p: THREE.Vector3; h: number }[]) => {
@@ -301,10 +302,10 @@ export function buildRail(terrain: Terrain, track: Track): RailSystem {
     });
   };
 
-  // ---- 山陽新幹線 (高架) ----
+  // ---- 山陽新幹線 (在来線の上を行く二段高架) ----
   // 高架は建物や道路をまたぐので、路面から逃がす処理 (keepOffCourse) は掛けない
   const shinLine = new RailLine('shinkansen', withTail(samplePath(d.shinkansen.path, 6), 80, 80), railHeight(d.shinkansen.embankment));
-  // ---- JR 山陽本線 (地上) ----
+  // ---- JR 山陽本線 (福山駅前後は高架、東の外れで地上) ----
   const jrLine = new RailLine('jr', keepOffCourse(withTail(samplePath(d.jr.path, 6), 60, 60)), railHeight(d.jr.embankment));
 
   const ballastTex = makeBallastTexture();
@@ -318,6 +319,7 @@ export function buildRail(terrain: Terrain, track: Track): RailSystem {
   group.add(buildGroundTrack(shinLine, ballastTex, terrain, d.shinkansen.embankment, clearOfCourse, onCourse, true));
   group.add(buildGroundTrack(jrLine, ballastTex, terrain, d.jr.embankment, clearOfCourse, onCourse, true));
   group.add(buildViaduct(shinLine, concreteTex, terrain, clearOfCourse));
+  group.add(buildViaduct(jrLine, concreteTex, terrain, clearOfCourse));
 
   // ---- 駅 ----
   group.add(station(d.shinkansen.stations, shinLine, 0x5a6470, 5, 410, 0));
@@ -365,7 +367,7 @@ export function buildRail(terrain: Terrain, track: Track): RailSystem {
 
 /**
  * 地上区間: バラスト + 盛土 + レール (単線)。
- * 高架区間 (el > 1.5) は buildViaduct が描くので除く。踏切 (コースと交わる所) は
+ * 高架区間 (el > 1.5) は buildViaduct が描くので除く。地上の線路がコースと交わる所は
  * 路面を見せるためバラストと盛土を描かず、レールだけ置く。
  */
 function buildGroundTrack(line: RailLine, tex: THREE.Texture, terrain: Terrain, emb: number,

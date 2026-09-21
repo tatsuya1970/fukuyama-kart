@@ -2,7 +2,8 @@
 //   node tools/fetch_rail.mjs && node tools/build_rail.mjs
 // ・同じ路線名の way を端点でつないで 1 本の折れ線にする
 // ・コースの周り (BBOX) だけ切り出して 60m 間隔に間引く
-// ・h (地面からの高さ) は高架なら一定値、地上なら 0。高架の出入りは両端 200m で傾ける
+// ・h (地面からの高さ) は OSM の bridge=yes が付いた所だけ高架。地上との境目は ramp m で傾ける
+//   (福山市内の山陽本線は福山駅を含めてずっと高架で、コースと交わる 2 か所にも踏切は無い)
 // データは © OpenStreetMap contributors (ODbL)。
 import { readFileSync, writeFileSync } from 'node:fs';
 
@@ -14,7 +15,8 @@ const key = p => p.lat.toFixed(7) + ',' + p.lon.toFixed(7);
 
 /** 同じ路線の way を端点でつないで、いちばん長い連結成分を折れ線で返す */
 function stitch(ways) {
-  const segs = ways.map(w => w.geometry.slice());
+  // 高架かどうかは way 単位のタグなので、点に持たせてから連結する
+  const segs = ways.map(w => w.geometry.map(p => ({ lat: p.lat, lon: p.lon, br: w.tags?.bridge === 'yes' })));
   const out = [];
   while (segs.length) {
     let cur = segs.shift();
@@ -58,15 +60,21 @@ function thin(pts, step) {
   return out;
 }
 
-/** 高架の高さ h をつける。両端 ramp m は 0 から立ち上げる (地面に潜らせない) */
+/**
+ * OSM の bridge=yes が付いた区間だけ高さ h にする。地上の点までの距離が ramp m 未満なら
+ * その分だけ下げて、取り付けを傾ける。BBOX で切った両端も地上とみなして 0 まで落とす
+ * (地面に潜らせないため)。
+ */
 function withHeight(pts, h, ramp) {
   const d = [0];
   for (let i = 1; i < pts.length; i++) d.push(d[i - 1] + Math.hypot((pts[i].lat - pts[i - 1].lat) * ky, (pts[i].lon - pts[i - 1].lon) * kx));
   const total = d[d.length - 1];
-  return pts.map((p, i) => ({
-    lat: +p.lat.toFixed(6), lon: +p.lon.toFixed(6),
-    h: +(h * Math.min(1, d[i] / ramp) * Math.min(1, (total - d[i]) / ramp)).toFixed(2),
-  }));
+  return pts.map((p, i) => {
+    if (!p.br) return { lat: +p.lat.toFixed(6), lon: +p.lon.toFixed(6), h: 0 };
+    let gap = Math.min(d[i], total - d[i]);            // 折れ線の端まで
+    for (let j = 0; j < pts.length; j++) if (!pts[j].br) gap = Math.min(gap, Math.abs(d[j] - d[i]));
+    return { lat: +p.lat.toFixed(6), lon: +p.lon.toFixed(6), h: +(h * Math.min(1, gap / ramp)).toFixed(2) };
+  });
 }
 
 function line(name, h, ramp, step) {
@@ -76,10 +84,13 @@ function line(name, h, ramp, step) {
   return withHeight(pts, h, ramp);
 }
 
-// 山陽新幹線は福山駅の前後ずっと高架 (福山城のすぐ南を通る)。BBOX の端で地面に落とす。
-const shinkansen = line('山陽新幹線', 9, 300, 60);
-// 山陽本線は地上。
-const sanyo = line('JR山陽本線', 0, 1, 60);
+// 福山市内は二段の高架で、下が在来線 (山陽本線)、その上を新幹線がまたぐ。
+// OSM でも両者は水平に 1m しか離れていない区間が長い。
+// 在来線の桁上面 7m + 車両 (屋根 4.2m / パンタ 5.4m) を新幹線の桁下 (h - 1.8m) が
+// 越えるように、新幹線は 15.5m に置く。BBOX の端で地面に落とす。
+const shinkansen = line('山陽新幹線', 15.5, 300, 60);
+// 山陽本線も福山駅は高架駅で、この範囲はほぼ全線が高架。東の外れだけ地上に降りる。
+const sanyo = line('JR山陽本線', 7, 250, 60);
 
 writeFileSync('data/rail.json', JSON.stringify({
   comment: '福山市内の鉄道の実在位置 (緯度経度)。線形は OpenStreetMap (ODbL) の山陽新幹線・JR山陽本線から取った。h は地面からの高さ (m)。tools/build_rail.mjs が生成。',
@@ -87,7 +98,7 @@ writeFileSync('data/rail.json', JSON.stringify({
     name: '山陽新幹線',
     trackSpacing: 0,
     embankment: 0,
-    viaductHeight: 9,
+    viaductHeight: 15.5,
     stations: [{ name: '福山駅', lat: 34.489280, lon: 133.362480 }],
     path: shinkansen,
   },
@@ -95,7 +106,7 @@ writeFileSync('data/rail.json', JSON.stringify({
     name: 'JR山陽本線 (福山駅付近)',
     trackSpacing: 0,
     embankment: 0.8,
-    viaductHeight: 0,
+    viaductHeight: 7,
     stations: [{ name: '福山駅', lat: 34.489430, lon: 133.362480 }],
     path: sanyo,
   },

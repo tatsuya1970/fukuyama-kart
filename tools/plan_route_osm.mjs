@@ -2,7 +2,7 @@
 // vias.open が true なら閉じない (最後の経由地から最初へは戻らない) 一本道として出力する。
 //   node tools/plan_route_osm.mjs [vias.json] [out.json]   → data/drawn_route.json
 // 経由地の 3 番目の要素は道路の絞り込み ("ref|name|highway" に対する正規表現)。
-// links は OSM でつながっていない踏切などを手でつなぐ。
+// links は OSM でつながっていない所 (駅前広場など) を手でつなぐ。
 // OSM 道路網で経由地を最短路でつなぎ、案内線を作る
 import { readFileSync, writeFileSync } from 'node:fs';
 const d = JSON.parse(readFileSync('data/osm/fukuyama.json', 'utf8')).elements;

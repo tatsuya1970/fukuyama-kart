@@ -121,7 +121,7 @@ const JA: Dict = {
   'race.finalLap': 'ファイナルラップ!',
   'race.finish': 'FINISH!',
   'race.go': 'GO!',
-  'race.tram': '踏切に注意!',
+  'race.tram': '列車に接触!',
   'race.soloFallback': '接続が間に合わないので 1 人で走ります',
 
   'q.high': '高 (専用GPU向け)',
@@ -197,7 +197,7 @@ const EN: Dict = {
   'race.finalLap': 'FINAL LAP!',
   'race.finish': 'FINISH!',
   'race.go': 'GO!',
-  'race.tram': 'Watch the level crossing!',
+  'race.tram': 'Hit by a train!',
   'race.soloFallback': 'Could not connect in time. Racing solo.',
 
   'q.high': 'High (discrete GPU)',
