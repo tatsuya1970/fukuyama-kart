@@ -1,0 +1,244 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Noto Sans JP";
+      font-style: normal;
+      font-weight: 400;
+      font-display: block;
+      src: url("assets/fonts/NotoSansJP-400.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      font-style: normal;
+      font-weight: 700;
+      font-display: block;
+      src: url("assets/fonts/NotoSansJP-700.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      font-style: normal;
+      font-weight: 900;
+      font-display: block;
+      src: url("assets/fonts/NotoSansJP-900.woff2") format("woff2");
+    }
+
+    #root {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      container-type: size;
+      font-family: "Noto Sans JP", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- full-bleed ground: scrim over the approved footage ---- */
+    .coast05-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(11, 26, 42, 0.34) 0%,
+        rgba(11, 26, 42, 0.1) 22%,
+        rgba(11, 26, 42, 0) 42%,
+        rgba(11, 26, 42, 0) 62%,
+        rgba(11, 26, 42, 0.42) 80%,
+        rgba(11, 26, 42, 0.68) 100%
+      );
+    }
+
+    /* ---- top band: the hero counter ---- */
+    .coast05-band {
+      position: absolute;
+      top: 13%;
+      left: 6cqw;
+      width: 88cqw;
+    }
+    .coast05-plate {
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 26, 42, 0.88);
+      border-top: 1px solid #2b4055;
+      transform-origin: top center;
+    }
+    .coast05-inner {
+      position: relative;
+      padding: 3.6cqw 4cqw 3.4cqw;
+    }
+    .coast05-kicker {
+      display: flex;
+      align-items: center;
+      gap: 1.6cqw;
+    }
+    .coast05-rule {
+      width: 8cqw;
+      height: 0.42cqw;
+      background: #ffd83d;
+      transform-origin: left center;
+    }
+    .coast05-label {
+      font-weight: 400;
+      font-size: 2.9cqw;
+      line-height: 1.2;
+      letter-spacing: 0.2em;
+      color: #c9d6e4;
+    }
+    .coast05-row {
+      display: flex;
+      align-items: baseline;
+      margin-top: 1.6cqw;
+    }
+    .coast05-num {
+      display: inline-block;
+      width: 57cqw;
+      font-weight: 900;
+      font-size: 31cqw;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      color: #ffd83d;
+      font-variant-numeric: tabular-nums;
+      transform-origin: left center;
+      white-space: nowrap;
+    }
+    .coast05-unit {
+      font-weight: 700;
+      font-size: 9.5cqw;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+
+    /* ---- lower credit line, over the road ---- */
+    .coast05-footer {
+      position: absolute;
+      left: 6cqw;
+      bottom: 17.6%;
+      width: 88cqw;
+      display: flex;
+      align-items: center;
+      gap: 2cqw;
+    }
+    .coast05-frule {
+      width: 11cqw;
+      height: 0.3cqw;
+      background: #ffd83d;
+      transform-origin: left center;
+      flex: none;
+    }
+    .coast05-credit {
+      font-weight: 400;
+      font-size: 3cqw;
+      line-height: 1.4;
+      letter-spacing: 0.16em;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+  </style>
+
+  <div id="root" data-composition-id="05-coast" data-width="1080" data-height="1920">
+    <!-- approved frame video hoisted by assemble-index -->
+
+    <div class="coast05-scrim clip" data-start="0" data-duration="4" data-track-index="1"></div>
+
+    <div class="coast05-band clip" data-start="0" data-duration="4" data-track-index="2">
+      <div class="coast05-plate" id="coast05-plate"></div>
+      <div class="coast05-inner">
+        <div class="coast05-kicker">
+          <span class="coast05-rule" id="coast05-rule"></span>
+          <span class="coast05-label" id="coast05-label"
+                data-layout-allow-overlap="数字の行ボックスが line-height 0.9 で上へ張り出すため見出しの箱と重なるが、字面は重ならない">福山駅から</span>
+        </div>
+        <div class="coast05-row">
+          <span class="coast05-num" id="coast05-num">0.0</span>
+          <span class="coast05-unit" id="coast05-unit">km</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="coast05-footer clip" data-start="0" data-duration="4" data-track-index="3">
+      <span class="coast05-frule" id="coast05-frule"></span>
+      <span class="coast05-credit" id="coast05-credit">県道22号 → 鞆の浦</span>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+
+      // Scene 2 (1.0-2.3s) — the navy plate lands, kicker + label arrive.
+      tl.fromTo(
+        "#coast05-plate",
+        { scaleY: 0 },
+        { scaleY: 1, duration: 0.38, ease: "power3.out" },
+        0.88,
+      );
+      tl.fromTo(
+        "#coast05-rule",
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.42, ease: "power2.out" },
+        1.02,
+      );
+      tl.fromTo(
+        "#coast05-label",
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.44, ease: "power2.out" },
+        1.08,
+      );
+
+      // value-scaled counter — 0 -> 20.7, the value and the transform scale
+      // share one start, one duration, one ease. No overshoot, one run only.
+      var numEl = document.getElementById("coast05-num");
+      var state = { value: 0 };
+      var COUNT_AT = 1.12;
+      var COUNT_DUR = 1.18;
+      var COUNT_EASE = "power3.out";
+      var START_SCALE = 0.56;
+
+      tl.to(
+        state,
+        {
+          value: 20.7,
+          duration: COUNT_DUR,
+          ease: COUNT_EASE,
+          onUpdate: function () {
+            numEl.textContent = state.value.toFixed(1);
+          },
+        },
+        COUNT_AT,
+      );
+      tl.fromTo(
+        numEl,
+        { scale: START_SCALE },
+        { scale: 1, duration: COUNT_DUR, ease: COUNT_EASE },
+        COUNT_AT,
+      );
+
+      // "km" joins the moment the number lands (2.30s), then everything holds.
+      tl.fromTo(
+        "#coast05-unit",
+        { opacity: 0, y: 26 },
+        { opacity: 1, y: 0, duration: 0.42, ease: "back.out(1.5)" },
+        COUNT_AT + COUNT_DUR,
+      );
+
+      // Scene 3 (2.3-4.0s) — counter held; the lower credit line fades up over the road.
+      tl.fromTo(
+        "#coast05-frule",
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.66, ease: "power2.out" },
+        2.44,
+      );
+      tl.fromTo(
+        "#coast05-credit",
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.64, ease: "power2.out" },
+        2.62,
+      );
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["05-coast"] = tl;
+      tl.seek(0);
+    })();
+  </script>
+</template>

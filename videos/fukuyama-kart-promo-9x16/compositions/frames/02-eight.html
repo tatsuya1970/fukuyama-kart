@@ -1,0 +1,221 @@
+<template>
+  <style>
+    @font-face {
+      font-family: 'Noto Sans JP';
+      font-style: normal;
+      font-weight: 400;
+      font-display: block;
+      src: url('assets/fonts/NotoSansJP-400.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Noto Sans JP';
+      font-style: normal;
+      font-weight: 900;
+      font-display: block;
+      src: url('assets/fonts/NotoSansJP-900.woff2') format('woff2');
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      container-type: size;
+      font-family: 'Noto Sans JP', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* full-bleed ground: a flat navy scrim that dims the approved video */
+    .eight-scrim {
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 26, 42, 0.32);
+    }
+
+    /* bottom band ----------------------------------------------------- */
+    .eight-band {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 908px;
+      height: 672px;
+    }
+
+    .eight-plate {
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 26, 42, 0.75);
+      border-top: 1px solid #2b4055;
+      transform-origin: 0% 50%;
+      will-change: transform;
+    }
+
+    .eight-inner {
+      position: absolute;
+      inset: 0;
+      padding: 0 6cqw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform-origin: 50% 100%;
+      will-change: transform;
+    }
+
+    /* 4 x 2 driver chips ---------------------------------------------- */
+    .eight-chips {
+      display: grid;
+      grid-template-columns: repeat(4, 150px);
+      grid-auto-rows: 150px;
+      column-gap: 46px;
+      row-gap: 34px;
+    }
+
+    .eight-chip {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 4px solid #ffffff;
+      box-sizing: border-box;
+      will-change: transform, opacity;
+    }
+
+    .eight-rule {
+      width: 8cqw;
+      height: 5px;
+      margin-top: 40px;
+      background: #ffd83d;
+      transform-origin: 0% 50%;
+    }
+
+    .eight-head {
+      margin-top: 24px;
+      font-size: 13cqw;
+      font-weight: 900;
+      line-height: 0.88;
+      letter-spacing: -0.04em;
+      color: #ffffff;
+      white-space: nowrap;
+      will-change: transform, opacity;
+    }
+
+    .eight-num {
+      color: #ffd83d;
+    }
+
+    .eight-label {
+      margin-top: 18px;
+      font-size: 2.4cqw;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.14em;
+      color: #ffd83d;
+      white-space: nowrap;
+      will-change: transform, opacity;
+    }
+  </style>
+
+  <div id="root" data-composition-id="02-eight" data-width="1080" data-height="1920">
+    <!-- approved frame video hoisted by assemble-index -->
+
+    <div class="clip eight-scrim" data-start="0" data-duration="3.5" data-track-index="1"></div>
+
+    <div class="clip eight-band" data-start="0" data-duration="3.5" data-track-index="2">
+      <div class="eight-plate"></div>
+      <div class="eight-inner">
+        <div class="eight-chips">
+          <div class="eight-chip" style="background: #e63946"></div>
+          <div class="eight-chip" style="background: #d6336c"></div>
+          <div class="eight-chip" style="background: #27476e"></div>
+          <div class="eight-chip" style="background: #e07a5f"></div>
+          <div class="eight-chip" style="background: #6b4423"></div>
+          <div class="eight-chip" style="background: #3f7d3f"></div>
+          <div class="eight-chip" style="background: #e9eef2"></div>
+          <div class="eight-chip" style="background: #1b1b1b"></div>
+        </div>
+        <div class="eight-rule"></div>
+        <div class="eight-head">最大<span class="eight-num">8</span>人</div>
+        <div class="eight-label">オンライン対戦</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var root = document.querySelector('[data-composition-id="02-eight"]');
+      var plate = root.querySelector('.eight-plate');
+      var inner = root.querySelector('.eight-inner');
+      var chips = root.querySelectorAll('.eight-chip');
+      var rule = root.querySelector('.eight-rule');
+      var head = root.querySelector('.eight-head');
+      var label = root.querySelector('.eight-label');
+
+      var tl = gsap.timeline({ paused: true });
+
+      /* Scene 1 (0.0-0.9s) — grid.mp4 alone, eight karts launch. No type. */
+
+      /* Scene 2 (0.9-2.3s) — the navy plate wipes in, then eight chips land
+         one at a time, top-left first, per-item stagger, spring-pop settle. */
+      tl.fromTo(
+        plate,
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.44, ease: 'power3.out' },
+        0.9
+      );
+
+      tl.fromTo(
+        chips,
+        { scale: 0.24, opacity: 0, y: 28 },
+        {
+          scale: 1,
+          opacity: 1,
+          y: 0,
+          duration: 0.38,
+          ease: 'back.out(2.4)',
+          stagger: 0.115
+        },
+        1.06
+      );
+
+      /* slow push-in under the assembling array (near-static hold) */
+      tl.fromTo(
+        inner,
+        { scale: 1 },
+        { scale: 1.03, duration: 2.1, ease: 'sine.out' },
+        1.06
+      );
+
+      /* Scene 3 (2.3-3.5s) — on the beat the eighth chip lands: the accent
+         rule draws, the count spring-pops, the label fades a half-beat later. */
+      tl.fromTo(
+        rule,
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.3, ease: 'power2.out' },
+        2.24
+      );
+
+      tl.fromTo(
+        head,
+        { scale: 0.62, opacity: 0, y: 30 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.48, ease: 'back.out(2.6)' },
+        2.3
+      );
+
+      tl.fromTo(
+        label,
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.44, ease: 'power2.out' },
+        2.66
+      );
+
+      /* hold the landed state to the end of the frame */
+      tl.to(root, { duration: 0.001 }, 3.499);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines['02-eight'] = tl;
+      tl.seek(0);
+    })();
+  </script>
+</template>

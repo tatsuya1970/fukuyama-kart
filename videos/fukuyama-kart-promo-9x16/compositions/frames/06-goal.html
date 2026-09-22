@@ -1,0 +1,217 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-400.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-700.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-900.woff2") format("woff2");
+      font-weight: 900;
+      font-style: normal;
+      font-display: block;
+    }
+
+    #root {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      container-type: size;
+      font-family: "Noto Sans JP", sans-serif;
+      font-kerning: none;
+    }
+
+    #root .goal-layer {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* full-bleed ground: a scrim riding on the approved footage */
+    #root .goal-scrim {
+      background: linear-gradient(
+        180deg,
+        rgba(11, 26, 42, 0.3) 0%,
+        rgba(11, 26, 42, 0.08) 22%,
+        rgba(11, 26, 42, 0) 48%,
+        rgba(11, 26, 42, 0.3) 78%,
+        rgba(11, 26, 42, 0.58) 100%
+      );
+    }
+
+    /* Scene 2 — the display hit */
+    #root .goal-word {
+      position: absolute;
+      left: 6cqw;
+      right: 6cqw;
+      top: 48%;
+      text-align: center;
+      white-space: nowrap;
+      font-size: 26cqw;
+      font-weight: 900;
+      line-height: 0.88;
+      letter-spacing: -0.04em;
+      color: #ffd83d;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+
+    /* Scenes 3–4 — the bottom nameplate band, clear of the lantern shaft */
+    #root .goal-band {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 63.5%;
+      height: 17%;
+    }
+    #root .goal-plate {
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 26, 42, 0.75);
+      border-top: 1px solid #2b4055;
+      transform-origin: 50% 100%;
+      will-change: transform, opacity;
+    }
+    #root .goal-band-inner {
+      position: absolute;
+      inset: 0;
+      padding: 0 6cqw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #root .goal-rule {
+      width: 9cqw;
+      height: 4px;
+      background: #ffd83d;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+    #root .goal-name {
+      margin-top: 2.4cqw;
+      text-align: center;
+      white-space: nowrap;
+      font-size: 11.5cqw;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+    #root .goal-label {
+      margin-top: 2.2cqw;
+      text-align: center;
+      white-space: nowrap;
+      font-size: 2.9cqw;
+      font-weight: 500;
+      line-height: 1.5;
+      letter-spacing: 0.08em;
+      color: #c9d6e4;
+      will-change: transform, opacity;
+    }
+  </style>
+
+  <div
+    id="root"
+    data-composition-id="06-goal"
+    data-start="0"
+    data-duration="5.5"
+    data-width="1080"
+    data-height="1920"
+  >
+    <!-- approved frame video hoisted by assemble-index -->
+
+    <div
+      class="clip goal-layer goal-scrim"
+      data-start="0"
+      data-duration="5.5"
+      data-track-index="1"
+    ></div>
+
+    <div class="clip goal-layer" data-start="1.9" data-duration="3.6" data-track-index="2">
+      <div class="goal-word" id="goal-word">GOAL</div>
+    </div>
+
+    <div class="clip goal-layer" data-start="2.9" data-duration="2.6" data-track-index="3">
+      <div class="goal-band">
+        <div class="goal-plate" id="goal-plate"></div>
+        <div class="goal-band-inner">
+          <div class="goal-rule" id="goal-rule"></div>
+          <div class="goal-name" id="goal-name">鞆の浦 常夜燈</div>
+          <div class="goal-label" id="goal-label">1859年・高さ11m ・ Tomonoura Joyato</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+
+      // Scene 1 (0.0–1.9s): footage only — the gantry runs at the karts. Zero type.
+
+      // Scene 2 (1.9–2.7s): spring-pop entrance — GOAL lands on the beat the
+      // karts pass under the on-screen gantry (smooth long-tail settle).
+      tl.fromTo(
+        "#goal-word",
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.52, ease: "power3.out" },
+        1.9
+      );
+
+      // Scene 3 (2.7–3.7s): scale-swap — GOAL shrinks away upward (power2.in)
+      // while the nameplate pops in below it with a 0.15s overlap.
+      tl.to(
+        "#goal-word",
+        { scale: 0.68, opacity: 0, y: -130, duration: 0.4, ease: "power2.in" },
+        2.7
+      );
+      tl.fromTo(
+        "#goal-plate",
+        { opacity: 0, scaleY: 0.72 },
+        { opacity: 1, scaleY: 1, duration: 0.5, ease: "power2.out" },
+        2.95
+      );
+      tl.fromTo(
+        "#goal-name",
+        { scale: 0.68, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.4)" },
+        2.95
+      );
+      tl.fromTo(
+        "#goal-rule",
+        { scaleX: 0, opacity: 0 },
+        { scaleX: 1, opacity: 1, duration: 0.34, ease: "power2.out" },
+        3.16
+      );
+
+      // Scene 4 (3.6–5.0s): the small line fades up under the name, landing at
+      // 4.0s — then the frame holds dead still for the crossfade out.
+      tl.fromTo(
+        "#goal-label",
+        { opacity: 0, y: 22 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+        3.6
+      );
+
+      // hold the landed state to the end of the frame (no-op, extends the timeline)
+      tl.set("#goal-label", { opacity: 1 }, 4.99);
+
+      window.__timelines["06-goal"] = tl;
+    })();
+  </script>
+</template>

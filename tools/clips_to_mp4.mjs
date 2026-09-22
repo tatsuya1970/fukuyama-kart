@@ -1,5 +1,5 @@
 // 連番 PNG (tools/record_clip.mjs の出力) を mp4 にする。
-//   node tools/clips_to_mp4.mjs <出力ディレクトリ> [クリップ名...]
+//   [SRC=<連番PNGのある所>] node tools/clips_to_mp4.mjs <出力ディレクトリ> [クリップ名...]
 //   例: node tools/clips_to_mp4.mjs videos/fukuyama-kart-promo/assets
 //
 // HyperFrames はレンダリング時に動画を任意の時刻へシークするので、
@@ -8,7 +8,9 @@ import { spawnSync } from 'node:child_process';
 import { mkdirSync, readdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 
-const SRC = 'videos/clips';
+// 読み込み元。縦型は SRC=videos/clips9x16 のように渡す
+//   SRC=videos/clips9x16 node tools/clips_to_mp4.mjs videos/fukuyama-kart-promo-9x16/assets
+const SRC = process.env.SRC ?? 'videos/clips';
 const outDir = process.argv[2];
 if (!outDir) { console.error('使い方: node tools/clips_to_mp4.mjs <出力ディレクトリ> [クリップ名...]'); process.exit(1); }
 const want = process.argv.slice(3);

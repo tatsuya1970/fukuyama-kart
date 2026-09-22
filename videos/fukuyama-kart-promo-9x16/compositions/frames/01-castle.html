@@ -1,0 +1,233 @@
+<template>
+  <div id="root" data-composition-id="01-castle" data-width="1080" data-height="1920">
+    <!-- Approved full-bleed ground: aerial orbit of Fukuyama Castle. Hoisted to the host
+         root by assemble-index; full brightness, never dimmed — it IS the hook. -->
+    <!-- approved frame video hoisted by assemble-index -->
+
+    <!-- Type stage — transparent, rides over the hoisted footage for the whole frame. -->
+    <div
+      class="clip castle-stage"
+      id="01-castle-stage"
+      data-start="0"
+      data-duration="5"
+      data-track-index="1"
+    >
+      <!-- The navy plate: its own ground for the type, laid on the plain green of the
+           castle park (y 62%–78%). Wipes up from the bottom edge on beat 0. -->
+      <div class="castle-plate" id="01-castle-plate">
+        <!-- Scene 2 — the lede, two words on the baseline rail. -->
+        <div class="castle-lede" id="01-castle-lede">
+          <span class="castle-w1" id="01-castle-w1">実在の、</span
+          ><span class="castle-w2" id="01-castle-w2">福山。</span>
+        </div>
+
+        <!-- Scene 4 — the hero, landing above the rail. -->
+        <div class="castle-title" id="01-castle-title">福山グランプリ</div>
+
+        <!-- Scene 3 — the yellow rule, drawn left→right on the same baseline. -->
+        <div class="castle-rule" id="01-castle-rule"></div>
+
+        <!-- Scene 4 — mono-treated label beneath the rule. -->
+        <div class="castle-label" id="01-castle-label">FUKUYAMA KART</div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-400.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-900.woff2") format("woff2");
+      font-weight: 900;
+      font-style: normal;
+      font-display: block;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      container-type: size;
+      overflow: hidden;
+      /* The hoisted <video> is mounted at the host root AFTER the frame clips, so the
+         type stage has to be lifted above it explicitly. */
+      z-index: 5;
+      font-family: "Noto Sans JP", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .castle-stage {
+      position: absolute;
+      inset: 0;
+      background: transparent;
+    }
+
+    /* ── the plate ─────────────────────────────────────────────────────────── */
+    .castle-plate {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 62cqh;
+      height: 16cqh;
+      background: rgba(11, 26, 42, 0.75);
+      transform-origin: 50% 100%;
+      will-change: transform;
+    }
+
+    /* ── Scene 2 — lede, bottom edge sitting just above the rail ───────────── */
+    .castle-lede {
+      position: absolute;
+      left: 6cqw;
+      right: 6cqw;
+      top: 5.4cqh;
+      font-size: 9.3cqw;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+      color: #ffffff;
+    }
+    .castle-w1,
+    .castle-w2 {
+      display: inline-block;
+      transform-origin: 0% 62%;
+      will-change: transform, filter;
+    }
+    .castle-w2 {
+      color: #ffd83d;
+    }
+
+    /* ── Scene 4 — hero display above the rail ─────────────────────────────── */
+    .castle-title {
+      position: absolute;
+      left: 6cqw;
+      right: 6cqw;
+      top: 4.6cqh;
+      font-size: 11.5cqw;
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+      color: #ffffff;
+      transform-origin: 0% 50%;
+      will-change: transform;
+    }
+
+    /* ── Scene 3 — the single ornament ─────────────────────────────────────── */
+    .castle-rule {
+      position: absolute;
+      left: 6cqw;
+      top: 11.2cqh;
+      width: 22cqw;
+      height: 6px;
+      background: #ffd83d;
+      transform-origin: 0% 50%;
+      will-change: transform;
+    }
+
+    /* ── Scene 4 — mono-treated chrome ─────────────────────────────────────── */
+    .castle-label {
+      position: absolute;
+      left: 6cqw;
+      right: 6cqw;
+      top: 13cqh;
+      font-size: 2.4cqw;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: #c9d6e4;
+      will-change: transform;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+
+      // Ids are frame-id prefixed ("01-castle-…") so sibling frames cannot collide.
+      // They start with a digit, which is NOT a valid CSS ident — resolve them with
+      // getElementById and hand GSAP the elements, never selector strings.
+      function el(name) {
+        return document.getElementById("01-castle-" + name);
+      }
+      var plate = el("plate"),
+        lede = el("lede"),
+        w1 = el("w1"),
+        w2 = el("w2"),
+        rule = el("rule"),
+        title = el("title"),
+        label = el("label");
+
+      // ── kinetic-beat-slam: ONE tempo grid drives every onset ──────────────
+      var T0 = 1.8; // Scene 2 downbeat — Scene 1 is footage only
+      var PULSE = 0.135; // sub-beat
+      function B(n) {
+        return Math.round((T0 + n * PULSE) * 1000) / 1000;
+      }
+
+      // ── Scene 2 (1.8–2.9s) — the plate wipes up from the bottom edge ──────
+      tl.fromTo(
+        plate,
+        { scaleY: 0 },
+        { scaleY: 1, duration: 0.44, ease: "power3.out" },
+        B(0),
+      );
+
+      // Per-word staggered reveal — DISTINCT entrance per word, two beats apart.
+      tl.fromTo(
+        w1,
+        { scale: 1.28, opacity: 0, filter: "blur(14px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.46, ease: "power4.out" },
+        B(2),
+      );
+      tl.fromTo(
+        w2,
+        { x: -46, opacity: 0, filter: "blur(10px)" },
+        { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.42, ease: "expo.out" },
+        B(4),
+      );
+
+      // ── Scene 3 (2.9–3.8s) — discrete-text-sequence: the line is replaced by a
+      //    hard state swap at a threshold. No fade, no slide — an instant cut. ──
+      tl.set(lede, { autoAlpha: 0 }, B(8));
+
+      // The yellow rule draws left→right on the baseline the words just left.
+      tl.fromTo(
+        rule,
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.55, ease: "power3.out" },
+        B(9),
+      );
+
+      // ── Scene 4 (3.8–5.0s) — spring-pop entrance, smooth long-tail settle ──
+      tl.fromTo(
+        title,
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.62, ease: "power3.out" },
+        B(15),
+      );
+      tl.fromTo(
+        label,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" },
+        B(17),
+      );
+
+      // Hold the landed lockup to the end of the frame (no exit — the root owns it).
+      tl.to({}, { duration: 0.455 }, 4.545);
+
+      window.__timelines["01-castle"] = tl;
+    })();
+  </script>
+</template>

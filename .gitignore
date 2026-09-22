@@ -15,7 +15,7 @@ data/osm/query.txt
 
 # プロモ動画 (videos/)。素材と書き出しは重いので入れない。
 # 作り直しは: node tools/record_promo.mjs → node tools/clips_to_mp4.mjs videos/fukuyama-kart-promo/assets
-videos/clips
+videos/clips*
 videos/*/renders
 videos/*/snapshots
 videos/*/assets/*.mp4

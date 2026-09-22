@@ -462,6 +462,10 @@ tools/build_en_page.mjs    ビルド後に英語版 dist/en/index.html を書き
 tools/probe_scene.mjs      画面前方の物体をレイキャストで特定
 tools/probe_uv.mjs         UV とアトラス参照先の特定
 tools/check_trains.mjs     車両が走行しているかの確認
+tools/record_clip.mjs      ?rec=1 で 1/30 秒ずつ進めて連番 PNG を撮る (プロモ動画の素材)
+tools/record_promo.mjs     プロモ動画の 6 カットの撮影位置とウォームアップ
+tools/clips_to_mp4.mjs     連番 PNG → mp4 (HyperFrames がシークできるよう GOP を短く)
+tools/fetch_promo_font.mjs 使う文字だけに絞った Noto Sans JP (レンダラに和文フォントが無いため)
 src/geo.ts        座標変換 (等距円筒近似, 原点 = 福山駅前)
 src/terrain.ts    地形メッシュ + 地面テクスチャ (道路・河川)
 src/buildings.ts  LOD1 建物メッシュ (テクスチャ 6 種)
@@ -480,6 +484,37 @@ src/hud.ts        HUD・ミニマップ
 src/audio.ts      WebAudio 効果音
 src/main.ts       シーン構築・レース進行
 ```
+
+## プロモ動画
+
+SNS 用の 30 秒動画を `videos/` に置いています。**16:9** (`fukuyama-kart-promo`) と **9:16** (`fukuyama-kart-promo-9x16`) の 2 本で、物語・尺・文言は同じです。合成は [HyperFrames](https://hyperframes.heygen.com/)（HTML で動画を書く）で、BGM・ナレーションは無し。
+
+映像はゲームそのものから撮ります。`tools/record_clip.mjs` が `?rec=1` で実時間に依存せず 1/30 秒ずつ進めて連番 PNG を撮るので、描画が 1〜8fps しか出ない環境 (swiftshader) でも出力は滑らかになります。
+
+```bash
+node tools/record_promo.mjs                 # 16:9 の 6 カット → videos/clips/
+node tools/clips_to_mp4.mjs videos/fukuyama-kart-promo/assets
+npm --prefix videos/fukuyama-kart-promo run check
+npm --prefix videos/fukuyama-kart-promo run render
+
+# 縦型はゲームを 1080x1920 で撮り直す (クロップではない)
+OUT=videos/clips9x16 W=1080 H=1920 Q_goal='&fovadd=18&campan=-2' node tools/record_promo.mjs
+SRC=videos/clips9x16 node tools/clips_to_mp4.mjs videos/fukuyama-kart-promo-9x16/assets
+```
+
+撮影用に足したクエリ:
+
+| パラメータ | 用途 |
+| --- | --- |
+| `?rec=1` | 実時間から切り離し、`window.__recStep(n)` で n コマ進める |
+| `?fovadd=<度>` | 画角を広げる。three.js の `fov` は垂直画角なので、縦長で撮ると水平の見える範囲が 16:9 の半分以下 (102°→43°) になる |
+| `?campan=<m>` | カメラは後ろのまま**視線だけ横に振る**。縦長では画角が狭く、コースの脇にある常夜燈が外れるため |
+| `?camk=<倍率>` | 追従カメラを硬くする (高速でもカートが小さくならない) |
+| `?photo=<lat>,<lon>,<高さ>,<距離>,<方位>` + `?orbit=<度/秒>` | 撮影カメラ。福山城の空撮に使っている |
+
+`?idx=` で置いた車は**速度 0 から始まる**ので、流し撮りは巡航速度に乗るまで空回し (`warm`) してから撮ります。主塔をくぐる拍やゴールの瞬間を秒に合わせるための到達コマ数は `tools/_probe_idx.mjs` で実測しています。
+
+素材の連番 PNG (`videos/clips*`) と書き出した mp4 は重いので Git には入れていません。上のコマンドで作り直せます。
 
 ## ライセンス
 

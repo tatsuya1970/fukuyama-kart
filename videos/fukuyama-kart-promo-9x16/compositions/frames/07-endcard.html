@@ -1,0 +1,238 @@
+<template>
+  <div id="root" data-composition-id="07-endcard" data-width="1080" data-height="1920">
+    <style>
+      @font-face {
+        font-family: "Noto Sans JP";
+        src: url("assets/fonts/NotoSansJP-400.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Noto Sans JP";
+        src: url("assets/fonts/NotoSansJP-700.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Noto Sans JP";
+        src: url("assets/fonts/NotoSansJP-900.woff2") format("woff2");
+        font-weight: 900;
+        font-style: normal;
+        font-display: block;
+      }
+
+      #root {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        container-type: size;
+        overflow: hidden;
+        font-family: "Noto Sans JP", sans-serif;
+      }
+
+      /* --- ground: full-bleed ink-black on its own clip layer --- */
+      .endcard07-ground {
+        position: absolute;
+        inset: 0;
+        background-color: #0b1a2a;
+      }
+
+      /* --- lockup: centred inside the portrait safe band (12% -> 83%) --- */
+      .endcard07-stage {
+        position: absolute;
+        top: 12%;
+        bottom: 17%;
+        left: 6cqw;
+        right: 6cqw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .endcard07-line {
+        display: block;
+        font-size: 14cqw;
+        font-weight: 900;
+        line-height: 0.9;
+        letter-spacing: -0.01em;
+        color: #ffffff;
+        white-space: nowrap;
+      }
+
+      .endcard07-chunk {
+        display: inline-block;
+        will-change: transform, opacity;
+      }
+
+      .endcard07-rule {
+        width: 22cqw;
+        height: 0.5cqw;
+        margin-top: 4cqw;
+        background-color: #ffd83d;
+        transform-origin: left center;
+      }
+
+      .endcard07-sub {
+        margin-top: 2.4cqw;
+        font-size: 5.4cqw;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 0.02em;
+        color: #c9d6e4;
+      }
+
+      .endcard07-pill {
+        margin-top: 5cqw;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 3.2cqw 3cqw;
+        background-color: #ffd83d;
+        color: #0b1a2a;
+        border-radius: 0;
+      }
+
+      .endcard07-url {
+        display: block;
+        font-size: 6.2cqw;
+        font-weight: 700;
+        line-height: 1.28;
+        letter-spacing: -0.01em;
+        white-space: nowrap;
+      }
+
+      .endcard07-note {
+        margin-top: 4.2cqw;
+        font-size: 2.5cqw;
+        font-weight: 400;
+        line-height: 1.5;
+        letter-spacing: 0.08em;
+        color: #8ca0b4;
+        white-space: nowrap;
+      }
+    </style>
+
+    <div
+      class="clip endcard07-ground"
+      data-start="0"
+      data-duration="3.5"
+      data-track-index="0"
+    ></div>
+
+    <div
+      class="clip endcard07-stage"
+      data-start="0"
+      data-duration="3.5"
+      data-track-index="1"
+    >
+      <div class="endcard07-line" id="endcard07-line-1"><span class="endcard07-chunk">FU</span><span class="endcard07-chunk">KU</span><span class="endcard07-chunk">YA</span><span class="endcard07-chunk">MA</span></div>
+      <div class="endcard07-line" id="endcard07-line-2"><span class="endcard07-chunk">KA</span><span class="endcard07-chunk">RT</span></div>
+
+      <div class="endcard07-rule" id="endcard07-rule"></div>
+      <div class="endcard07-sub" id="endcard07-sub">福山グランプリ</div>
+
+      <div class="endcard07-pill" id="endcard07-pill">
+        <span class="endcard07-url">tatsuya1970.github.io/</span>
+        <span class="endcard07-url">fukuyama-kart</span>
+      </div>
+
+      <div class="endcard07-note" id="endcard07-note">ブラウザで、いますぐ ・ インストール不要 ・ 最大8人</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        var root = document.currentScript
+          ? document.currentScript.closest('[data-composition-id="07-endcard"]')
+          : document.querySelector('[data-composition-id="07-endcard"]');
+        if (!root) return;
+
+        var q = function (sel) {
+          return root.querySelector(sel);
+        };
+
+        var line1 = root.querySelectorAll("#endcard07-line-1 .endcard07-chunk");
+        var line2 = root.querySelectorAll("#endcard07-line-2 .endcard07-chunk");
+        var ruleEl = q("#endcard07-rule");
+        var subEl = q("#endcard07-sub");
+        var pillEl = q("#endcard07-pill");
+        var noteEl = q("#endcard07-note");
+
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+
+        /* Scene 1 (0.00-1.05) — FUKUYAMA / KART assemble as a two-line chunk cascade */
+        tl.fromTo(
+          line1,
+          { yPercent: 55, opacity: 0 },
+          {
+            yPercent: 0,
+            opacity: 1,
+            duration: 0.46,
+            ease: "power3.out",
+            stagger: 0.085
+          },
+          0.05
+        );
+
+        tl.fromTo(
+          line2,
+          { yPercent: 55, opacity: 0 },
+          {
+            yPercent: 0,
+            opacity: 1,
+            duration: 0.46,
+            ease: "power3.out",
+            stagger: 0.085
+          },
+          0.42
+        );
+
+        /* Scene 2 (1.05-1.65) — yellow rule draws from the left, then the sub-line fades up */
+        tl.fromTo(
+          ruleEl,
+          { scaleX: 0, opacity: 1 },
+          { scaleX: 1, duration: 0.4, ease: "power2.out" },
+          1.05
+        );
+
+        tl.fromTo(
+          subEl,
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+          1.25
+        );
+
+        /* Scene 3 (1.68-2.18) — the URL plate spring-pops in (the call to action) */
+        tl.fromTo(
+          pillEl,
+          { scale: 0.84, opacity: 0 },
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.5,
+            ease: "back.out(1.7)"
+          },
+          1.68
+        );
+
+        /* Scene 4 (2.10-2.50) — the proof line fades in, then everything is frozen */
+        tl.fromTo(
+          noteEl,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.4, ease: "power1.out" },
+          2.1
+        );
+
+        /* dead-still hold 2.50 -> 3.50 (no jitter, no breathe) */
+        tl.set(noteEl, { opacity: 1 }, 3.5);
+
+        window.__timelines["07-endcard"] = tl;
+      })();
+    </script>
+  </div>
+</template>

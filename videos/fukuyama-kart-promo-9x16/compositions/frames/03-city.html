@@ -1,0 +1,271 @@
+<template>
+  <div
+    id="root"
+    data-composition-id="03-city"
+    data-start="0"
+    data-duration="4.5"
+    data-width="1080"
+    data-height="1920"
+  >
+    <!-- approved frame video hoisted by assemble-index -->
+
+    <!-- Scene 2 ground: top scrim (y 0-46%) so the headline reads over the city -->
+    <div class="clip f03city-scrim-top" id="f03city-scrim-top"
+         data-start="0" data-duration="4.5" data-track-index="1"></div>
+
+    <!-- Scene 2/3: the claim. Both states share one top-left anchor (hard-cut swap in place) -->
+    <div class="clip f03city-head" data-start="0" data-duration="4.5" data-track-index="2">
+      <div class="f03city-rule" id="f03city-rule"></div>
+      <div class="f03city-line" id="f03city-line-a"><span class="f03city-tok">この</span><span class="f03city-tok">街</span><span class="f03city-tok">は、</span></div>
+      <div class="f03city-line" id="f03city-line-b"
+           data-layout-allow-overlap="1 行の見出しを 2 行に折り返したもの。行間を詰めた大きな和文なので行ボックスは重なるが、字面は重ならない"><span class="f03city-row" data-layout-allow-overlap="1 行の見出しを 2 行に折り返したもの。行間を詰めた大きな和文なので行ボックスは重なるが、字面は重ならない">つくり物</span><span class="f03city-row f03city-ink" data-layout-allow-overlap="1 行の見出しを 2 行に折り返したもの。行間を詰めた大きな和文なので行ボックスは重なるが、字面は重ならない">じゃない。</span></div>
+    </div>
+
+    <!-- Scene 4: attribution (display requirement) -->
+    <div class="clip f03city-scrim-bottom" id="f03city-scrim-bottom"
+         data-start="0" data-duration="4.5" data-track-index="3"></div>
+    <div class="clip f03city-credit" id="f03city-credit"
+         data-start="0" data-duration="4.5" data-track-index="4">国土交通省 PLATEAU 3D都市モデル / 福山市 2020年度</div>
+  </div>
+
+  <style>
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-400.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-700.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans JP";
+      src: url("assets/fonts/NotoSansJP-900.woff2") format("woff2");
+      font-weight: 900;
+      font-style: normal;
+      font-display: block;
+    }
+
+    #root {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      container-type: size;
+      background: transparent;
+      font-family: "Noto Sans JP", sans-serif;
+      font-kerning: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .f03city-scrim-top {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 46%;
+      background: linear-gradient(
+        180deg,
+        rgba(11, 26, 42, 0.92) 0%,
+        rgba(11, 26, 42, 0.86) 16%,
+        rgba(11, 26, 42, 0.62) 34%,
+        rgba(11, 26, 42, 0.24) 66%,
+        rgba(11, 26, 42, 0) 100%
+      );
+      pointer-events: none;
+    }
+
+    .f03city-scrim-bottom {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 30%;
+      background: linear-gradient(
+        0deg,
+        rgba(11, 26, 42, 0.88) 0%,
+        rgba(11, 26, 42, 0.62) 40%,
+        rgba(11, 26, 42, 0.22) 72%,
+        rgba(11, 26, 42, 0) 100%
+      );
+      pointer-events: none;
+    }
+
+    .f03city-head {
+      position: absolute;
+      left: 6cqw;
+      right: 6cqw;
+      top: 12.6%;
+      height: 22%;
+    }
+
+    /* the system's only ornament - accent rule stub */
+    .f03city-rule {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 7cqw;
+      height: 3px;
+      background: #ffd83d;
+      transform-origin: 0% 50%;
+    }
+
+    .f03city-line {
+      position: absolute;
+      left: 0;
+      top: 12%;
+      width: 100%;
+      font-size: 14.4cqw;
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .f03city-tok {
+      display: inline-block;
+    }
+
+    /* the swapped-in claim: whole block lands at once, both line starts flush left */
+    .f03city-row {
+      display: block;
+    }
+
+    .f03city-ink {
+      color: #ffd83d;
+    }
+
+    .f03city-credit {
+      position: absolute;
+      left: 6cqw;
+      right: 6cqw;
+      top: 78%;
+      font-size: 2.3cqw;
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: 0.1em;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var root = document.querySelector('[data-composition-id="03-city"]');
+      if (!root) return;
+
+      var scrimTop = root.querySelector("#f03city-scrim-top");
+      var scrimBottom = root.querySelector("#f03city-scrim-bottom");
+      var rule = root.querySelector("#f03city-rule");
+      var lineA = root.querySelector("#f03city-line-a");
+      var lineB = root.querySelector("#f03city-line-b");
+      var tokens = Array.prototype.slice.call(
+        root.querySelectorAll("#f03city-line-a .f03city-tok")
+      );
+      var credit = root.querySelector("#f03city-credit");
+
+      var DUR = 4.5;
+      // one tempo grid drives every entrance (kinetic-beat-slam)
+      var PULSE = 0.13;
+      var S2 = 1.3; // the first line builds
+      var S3 = 2.6; // hard-cut word swap
+      var S4 = 3.7; // credit fades in
+
+      var tl = gsap.timeline({ paused: true });
+
+      // --- Scene 2 (1.3-2.6s): scrim, accent rule, per-word staggered reveal ---
+      tl.fromTo(
+        scrimTop,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.42, ease: "power2.out" },
+        S2 - 0.06
+      );
+
+      tl.fromTo(
+        rule,
+        { scaleX: 0, opacity: 1 },
+        { scaleX: 1, duration: 0.34, ease: "expo.out" },
+        S2 + 0.02
+      );
+
+      var EASES = ["power4.out", "expo.out", "circ.out"];
+      tokens.forEach(function (tok, i) {
+        tl.fromTo(
+          tok,
+          { opacity: 0, y: 26, filter: "blur(14px)" },
+          {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 0.44,
+            ease: EASES[i % EASES.length]
+          },
+          S2 + 0.12 + i * PULSE
+        );
+      });
+
+      // --- Scene 3 (2.6s): the signature move - instant hard-cut swap, no fade ---
+      // discrete-text-sequence: whole-line states replaced at thresholds, reverse-searched.
+      var STATES = [
+        { t: 0.0, s: "none" },
+        { t: S2, s: "a" },
+        { t: S3, s: "b" }
+      ];
+
+      function stateAt(time) {
+        for (var i = STATES.length - 1; i >= 0; i--) {
+          if (time >= STATES[i].t) return STATES[i].s;
+        }
+        return "none";
+      }
+
+      function applyState(s) {
+        lineA.style.display = s === "a" ? "block" : "none";
+        lineB.style.display = s === "b" ? "block" : "none";
+      }
+
+      applyState("none");
+
+      var driver = { t: 0 };
+      tl.to(
+        driver,
+        {
+          t: DUR,
+          duration: DUR,
+          ease: "none",
+          onUpdate: function () {
+            applyState(stateAt(driver.t));
+          }
+        },
+        0
+      );
+
+      // --- Scene 4 (3.7-4.5s): attribution fades in and holds to the last frame ---
+      tl.fromTo(
+        scrimBottom,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.45, ease: "power2.out" },
+        S4 - 0.06
+      );
+
+      tl.fromTo(
+        credit,
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        S4 + 0.02
+      );
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["03-city"] = tl;
+      tl.seek(0);
+    })();
+  </script>
+</template>

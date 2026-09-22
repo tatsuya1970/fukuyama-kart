@@ -901,6 +901,13 @@ async function main() {
   const orbitSpeed = Number(params.get('orbit') ?? 0);
   // ?camk=<倍率> で追従カメラを硬くする (撮影用。高速でもカートが小さくならない)
   const camStiff = Number(params.get('camk') ?? 1);
+  // ?fovadd=<度> で画角を広げる (撮影用)。three.js の fov は垂直画角なので、
+  // 縦長 (9:16) で撮ると水平の見える範囲が 16:9 の半分以下になる。そのぶんを足す。
+  const fovAdd = Number(params.get('fovadd') ?? 0);
+  // ?campan=<m> で追従カメラの注視点を横へずらす (撮影用)。カメラは後ろのままで
+  // 視線だけ振るので、カートが画の片側に寄り、反対側が広く写る。
+  // 縦長で撮ると画角が狭く、コースの脇にある被写体 (鞆の浦の常夜燈) が外れるため。
+  const camPan = Number(params.get('campan') ?? 0);
 
   function updateCamera(dt: number, lookBack: boolean) {
     const fx = Math.cos(player.heading), fz = Math.sin(player.heading);
@@ -910,7 +917,7 @@ async function main() {
       const a = ((paz + orbitSpeed * recTime) * Math.PI) / 180;
       camera.position.set(tx + Math.sin(a) * pd, terrain.groundHeight(tx, tz) + ph + pd * 0.35, tz + Math.cos(a) * pd);
       camera.lookAt(tx, terrain.groundHeight(tx, tz) + ph, tz);
-      camera.fov = 55; camera.updateProjectionMatrix();
+      camera.fov = 55 + fovAdd; camera.updateProjectionMatrix();
       return;
     }
     if (camMode === 3) { // 俯瞰 (デバッグ)
@@ -928,13 +935,17 @@ async function main() {
     const k = camMode === 2 ? 1 : Math.min(1, dt * (5 + speedT * 3) * camStiff);
     camPos.lerp(target, k);
     if (camMode === 2) camPos.copy(target);
-    const lookAt = new THREE.Vector3(player.x + fx * 6 * dir, player.y + 1.2, player.z + fz * 6 * dir);
+    // 注視点の横ずらし。進行方向の法線 (-fz, fx) 方向へ campan m だけ振る
+    const lookAt = new THREE.Vector3(
+      player.x + fx * 6 * dir - fz * camPan,
+      player.y + 1.2,
+      player.z + fz * 6 * dir + fx * camPan);
     camLook.lerp(lookAt, Math.min(1, dt * 10));
     camera.position.copy(camPos);
     camera.lookAt(camLook);
     const fovTarget = 68 + speedT * 12 + (player.boostTimer > 0 ? 10 : 0) + (player.starTimer > 0 ? 4 : 0);
     camFov = lerp(camFov, fovTarget, Math.min(1, dt * 4));
-    camera.fov = camFov; camera.updateProjectionMatrix();
+    camera.fov = camFov + fovAdd; camera.updateProjectionMatrix();
   }
   function updateSun(center: THREE.Vector3) {
     sun.position.copy(SUN_DIR).multiplyScalar(600).add(center);

@@ -6,7 +6,17 @@
 // 流し撮りのクリップは巡航速度に乗るまで (およそ 100 コマ) 空回ししてから撮る。
 // 見せ場 (主塔・ゴール) の到達コマは tools/_probe_idx.mjs で実測した値から逆算してある。
 // idx は data/course_path.json の通し番号。コースを引き直したらここも直すこと。
+//
+// 縦型 (9:16) を撮るときは出力先と画面サイズを環境変数で渡す:
+//   OUT=videos/clips9x16 W=1080 H=1920 node tools/record_promo.mjs
+// three.js の fov は垂直画角なので、縦長にしても被写体の大きさは変わらず左右だけ狭くなる。
+// 橋の主塔・常夜燈・天守はどれも縦長なので、画角はそのままのほうが収まりが良い。
 import { spawnSync } from 'node:child_process';
+
+const OUT = process.env.OUT ?? 'videos/clips';
+// Q_<クリップ名> でそのクリップだけクエリを足せる。縦型でゴールの画角を広げるなど。
+//   Q_goal='&fovadd=18&campan=-2' node tools/record_promo.mjs goal
+const extraFor = name => process.env[`Q_${name}`] ?? '';
 
 const BASE = 'rec=1&nohud=1&nofps=1&debug=1&q=high';
 const CLIPS = [
@@ -29,7 +39,7 @@ const want = process.argv.slice(2);
 for (const c of CLIPS) {
   if (want.length && !want.includes(c.name)) continue;
   console.log(`=== ${c.name} (${c.secs}s)`);
-  const r = spawnSync(process.execPath, ['tools/record_clip.mjs', `videos/clips/${c.name}`, String(c.secs), c.q],
+  const r = spawnSync(process.execPath, ['tools/record_clip.mjs', `${OUT}/${c.name}`, String(c.secs), c.q + extraFor(c.name)],
     { stdio: 'inherit', env: { ...process.env, WARM: String(c.warm) } });
   if (r.status !== 0) { console.error(`${c.name} で失敗しました`); process.exit(1); }
 }
