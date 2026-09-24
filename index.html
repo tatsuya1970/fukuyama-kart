@@ -105,6 +105,8 @@
     /* 絶対配置だと行数が増えたときに .keys と重なるので通常フローに置く */
     #overlay .credit { margin-top: 22px; font-size: 12px; opacity: .6; max-width: 900px; line-height: 1.7; }
     #overlay .credit a { color: inherit; text-decoration: underline; }
+    #overlay .author { margin-top: 10px; font-size: 14px; opacity: .85; }
+    #overlay .author a { color: inherit; text-decoration: underline; }
     #about { margin-top: 26px; max-width: 640px; text-align: left; font-size: 13px; line-height: 1.8; opacity: .72; }
     #about h3 { font-size: 14px; margin: 14px 0 2px; color: #ffd83d; }
     #about p { margin: 0; }
@@ -166,6 +168,22 @@
     #results { display: none; }
     #results table { margin: 0 auto 20px; border-collapse: collapse; font-size: 20px; }
     #results td { padding: 6px 18px; }
+    /* ゴールタイムのランキング (src/ranking.ts) */
+    #rankBox { margin: 0 auto 18px; max-width: 420px; }
+    #rankBox .rankTitle { font-size: 18px; font-weight: 800; color: #ffd83d; margin-bottom: 6px; }
+    #rankMsg { font-size: 14px; opacity: .85; margin-bottom: 8px; }
+    #rankForm { margin-bottom: 10px; }
+    #rankName { font-size: 17px; padding: 9px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,.3); background: rgba(255,255,255,.1); color: #fff; width: 160px; text-align: center; }
+    #rankName::placeholder { color: rgba(255,255,255,.45); }
+    #overlay #rankSubmit { font-size: 15px; font-weight: 800; padding: 9px 22px; border-radius: 12px; background: linear-gradient(#ffd83d, #e0a800); color: #222; box-shadow: none; }
+    #overlay #rankSubmit:disabled { opacity: .5; }
+    #rankList { list-style: none; margin: 0; padding: 0; font-size: 15px; }
+    #rankList li { display: flex; gap: 12px; padding: 3px 10px; border-radius: 8px; }
+    #rankList li.mine { background: rgba(255,216,61,.2); color: #ffd83d; font-weight: 800; }
+    #rankList .rk { width: 2em; text-align: right; opacity: .8; }
+    #rankList .nm { flex: 1; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #rankList .tm { font-variant-numeric: tabular-nums; }
+    #rankEmpty { font-size: 14px; opacity: .7; }
     /* ---- タッチ操作 (スマホ / タブレット) ----
        指を置いたまま隣のボタンへ滑らせても効くよう、#touch は画面全面で触れられ、
        src/input.ts が座標からボタンを引く。ボタンは #pads に置き、安全領域のぶん内側に寄せる。 */
@@ -253,6 +271,13 @@
     <div class="route" data-en-html='<b>START</b> Fukuyama Sta. → south from the station onto Route 2 → Irifune → Route 313 under the JR viaduct → Fukuyama Castle → west on Route 2 → Kusado Inari Shrine → down the west bank of the Ashida River → Kusado → Kusado Ohashi → Ashidagawa Ohashi Bridge → Minomi → Route 22 along the Inland Sea → Tajiri → Tomonoura → <b>GOAL</b> the Joyato lantern at Tomonoura<br /><span style="opacity:.75;font-size:13px">20.7 km one way — not a lap race. The racing line runs on PLATEAU road surfaces (99.7%), and the road width follows the real thing section by section (20 m on Route 2 down to 9 m on back streets). The JR line is elevated right through here, so the course passes under it at both crossings — there are no level crossings.</span>'><b>スタート</b> 福山駅 → 駅前を南下して国道2号へ → 入船町 → 国道313号で JR の高架をくぐる → 福山城 → 国道2号を西へ → 草戸稲荷神社 → 芦田川の西岸を南下 → 草戸町 → 草戸大橋 → 芦田川大橋 → 水呑町 → 県道22号で瀬戸内海沿いを南へ → 田尻町 → 鞆の浦 → <b>ゴール</b> 鞆の浦 常夜燈<br /><span style="opacity:.75;font-size:13px">20.7km のワンウェイ（周回しません）/ 走行線は PLATEAU の道路面の上を 99.7% 通り、路面の幅も区間ごとに実物に合わせています（国道2号 20m 〜 市道 9m）。JR はこの区間ずっと高架なので、線路とは 2 か所とも下をくぐります（踏切はありません）</span></div>
     <div id="results">
       <table id="resultTable"></table>
+      <div id="rankBox" style="display:none">
+        <div class="rankTitle" data-en="Ranking">ランキング</div>
+        <div id="rankMsg"></div>
+        <div id="rankForm"><input id="rankName" maxlength="10" placeholder="なまえ" data-en-placeholder="name" /> <button id="rankSubmit" data-en="Submit">登録</button></div>
+        <ol id="rankList"></ol>
+        <div id="rankEmpty" style="display:none" data-en="No records yet">まだ記録がありません</div>
+      </div>
     </div>
     <div id="mainButtons">
       <button id="startBtn" disabled data-en="Loading...">読み込み中...</button>
@@ -324,6 +349,7 @@
     </section>
     <div class="sites" data-en-html='More cities: <a href="https://hiroshima.citykart.jp/en/">Hiroshima Kart</a> ・ <a href="https://matsue.citykart.jp/en/">Matsue Kart</a> — all three at <a href="https://citykart.jp/en/">citykart.jp</a>'>ほかの街を走る: <a href="https://hiroshima.citykart.jp/">広島グランプリ</a> ・ <a href="https://matsue.citykart.jp/">松江グランプリ</a> — 3作の入口は <a href="https://citykart.jp/">citykart.jp</a></div>
     <div class="credit" data-en-html='3D city model: MLIT Project PLATEAU, "3D City Model (Project PLATEAU) Fukuyama City (FY2020)", adapted (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>) — buildings LOD2 (aerial-photo textures, incl. Fukuyama Castle) and LOD1, roads, terrain<br />Route planning, railway alignments and park outlines: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a> (ODbL)'>3D都市モデル: 国土交通省 PLATEAU「3D都市モデル（Project PLATEAU）福山市（2020年度）」を加工して作成 (<a href="https://creativecommons.org/licenses/by/4.0/deed.ja" target="_blank" rel="noopener">CC BY 4.0</a>) / 建築物 LOD2 (実写テクスチャ・福山城天守を含む)・LOD1・道路・地形を使用<br />ルートの下書き・山陽新幹線と JR 山陽本線の線形・公園の輪郭: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a> (ODbL)</div>
+    <div class="author" data-en-html='Made by <a href="https://www.takemura-techlab.com/" target="_blank" rel="noopener">Takemura TechLab</a>'>作者 <a href="https://www.takemura-techlab.com/" target="_blank" rel="noopener">Takemura TechLab</a></div>
     <div id="buildInfo"></div>
   </div>
   <div id="glLost"><div id="glLostMsg"></div><button id="glLostBtn"></button></div>
