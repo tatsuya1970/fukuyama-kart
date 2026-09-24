@@ -116,7 +116,7 @@ export class Hud {
   private mapScale = 1; private mapOx = 0; private mapOz = 0;
   private landmarkTimer = 0;
   private centerTimer = 0;
-  private rouletteIcons = ['🍄', '🍌', '🐢', '⭐'];
+  private rouletteIcons = ['💨', '🛢️', '🏀', '🛡️'];
 
   /** 一本道のときだけ使う「ゴールまで」の表示 */
   private remain: HTMLElement | null = null;
