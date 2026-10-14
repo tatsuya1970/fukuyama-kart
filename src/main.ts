@@ -155,16 +155,9 @@ async function main() {
   const turnListed = dbg.get('debug') ? false : await turnConfigured();
   if (netConsent) await startNet();
   // 低画質では MSAA も切る (内蔵 GPU では帯域を食う)
-  let renderer: THREE.WebGLRenderer;
-  try {
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: quality.level !== 'low', powerPreference: 'high-performance' });
-  } catch (e) {
-    // 端末側で WebGL が使えない (設定で切っている・ほかのタブが GPU を使い切っている・メモリ不足など)。
-    // 読み込み直しても直らないので、エラー扱いにせず直し方を案内して止める
-    report('gl', 'unavailable', { message: e instanceof Error ? e.message.slice(0, 300) : String(e) });
-    showGlUnavailable();
-    return;
-  }
+  const made = createRenderer(canvas, quality.level !== 'low');
+  if (!made) return;   // WebGL が使えない。案内は createRenderer が出した
+  const renderer = made;
   watchContextLoss(canvas);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, quality.maxPixelRatio));
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -1107,6 +1100,32 @@ function makeHills(terrain: Terrain): THREE.Mesh {
 }
 
 /**
+ * 描画器を作る。WebGL のコンテキストが作れないのはこちらの不具合ではなく環境のせい
+ * (Chrome でハードウェア アクセラレーションが切れている・GPU がブロックリストに入っている
+ * ・iPhone でメモリやほかのタブの WebGL が詰まっているなど) なので、MSAA を切った軽い設定で
+ * 一度だけやり直す。それでも作れなければ直し方を出して止まる (読み込み直しても直らないため、
+ * 「押すと再読み込み」のエラー表示にはしない)。記録は通知しない種類 gl/unavailable で残す。
+ */
+function createRenderer(canvas: HTMLCanvasElement, antialias: boolean): THREE.WebGLRenderer | null {
+  try {
+    return new THREE.WebGLRenderer({ canvas, antialias, powerPreference: 'high-performance' });
+  } catch { /* 下で軽い設定を試す */ }
+  try {
+    return new THREE.WebGLRenderer({ canvas, antialias: false });
+  } catch (e) {
+    report('gl', 'unavailable', { message: e instanceof Error ? e.message : String(e) });
+    const box = document.getElementById('glLost');
+    if (!box) throw e;
+    document.getElementById('glLostMsg')!.textContent = t('gl.unavailable');
+    const b = document.getElementById('glLostBtn') as HTMLButtonElement;
+    b.textContent = t('gl.reload');
+    b.onclick = () => location.reload();
+    box.style.display = 'flex';
+    return null;
+  }
+}
+
+/**
  * WebGL のコンテキストが失われたとき (GPU のメモリ不足・ドライバのリセット・モバイルで
  * 裏に回したときなど)。three.js はそのまま描画を止めるので、放っておくと黒い画面のまま
  * 戻らない。テクスチャを全部上げ直すより読み込み直すほうが確実なので、案内を出して
@@ -1125,17 +1144,6 @@ function watchContextLoss(canvas: HTMLCanvasElement): void {
     box.style.display = 'flex';
   });
   canvas.addEventListener('webglcontextrestored', () => location.reload());
-}
-
-/** WebGL を作れなかったとき。直し方を出し、ボタンで読み込み直せるようにする */
-function showGlUnavailable(): void {
-  const box = document.getElementById('glLost');
-  if (!box) return;
-  document.getElementById('glLostMsg')!.textContent = t('gl.unavailable');
-  const b = document.getElementById('glLostBtn') as HTMLButtonElement;
-  b.textContent = t('gl.reload');
-  b.onclick = () => location.reload();
-  box.style.display = 'flex';
 }
 
 main().catch(e => {

@@ -76,8 +76,8 @@ const JA: Dict = {
   'load.lod2Tex': 'LOD2 テクスチャ {0}/{1}',
   'load.error': 'エラー: {0}（押すと再読み込み）',
   'gl.lost': '画面の描画が止まりました（GPU のメモリ不足など）。画質を下げると起きにくくなります。',
+  'gl.unavailable': 'このブラウザでは 3D 表示 (WebGL) が使えません。Chrome / Edge は設定の「グラフィック アクセラレーションが使用可能な場合は使用する」をオンにして再起動してください。スマホはほかのタブやアプリを閉じてから読み込み直してください。',
   'gl.reload': '再読み込み',
-  'gl.unavailable': 'この端末・ブラウザでは 3D の描画（WebGL）を始められませんでした。ほかのタブやアプリを閉じるか、ブラウザを再起動してから読み込み直してください。iPhone・iPad でロックダウンモードがオンのときも使えません。',
 
   'hud.toGoal': 'ゴールまで',
 
@@ -169,8 +169,8 @@ const EN: Dict = {
   'load.lod2Tex': 'LOD2 textures {0}/{1}',
   'load.error': 'Error: {0} (tap to reload)',
   'gl.lost': 'Rendering stopped (the GPU may have run out of memory). A lower graphics setting makes this less likely.',
+  'gl.unavailable': 'This browser cannot show 3D graphics (WebGL). In Chrome / Edge, turn on "Use graphics acceleration when available" in Settings and restart the browser. On a phone, close other tabs and apps, then reload.',
   'gl.reload': 'Reload',
-  'gl.unavailable': 'This device or browser could not start 3D rendering (WebGL). Close other tabs or apps, or restart the browser, then reload. It is also unavailable on iPhone or iPad while Lockdown Mode is on.',
 
   'hud.toGoal': 'To goal',
 
