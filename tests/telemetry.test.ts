@@ -77,6 +77,16 @@ describe('本番の記録のまとめ (tools/telemetry_report.mjs)', () => {
     expect(isErrorRecord({ kind: 'load', event: 'resource' })).toBe(true);
     expect(isErrorRecord({ kind: 'load', event: 'ready' })).toBe(false);
     expect(isErrorRecord({ kind: 'net', event: 'presence' })).toBe(false);
+    // 端末で WebGL を作れないのはこちらで直せないので通知しない
+    expect(isErrorRecord({ kind: 'gl', event: 'unavailable' })).toBe(false);
+  });
+  it('WebGL を使えない端末は件数だけ添える', () => {
+    const { count, markdown } = summarize([
+      uncaught('TypeError: a is undefined'),
+      { kind: 'gl', event: 'unavailable', data: { message: 'Error creating WebGL context.' } },
+    ]);
+    expect(count).toBe(1);
+    expect(markdown).toContain('WebGL を使えない端末 1 件');
   });
   it('UA はブラウザと端末に丸める', () => {
     expect(browserOf('Mozilla/5.0 (iPhone; CPU iPhone OS 17_0) AppleWebKit/605.1.15 Version/17.0 Mobile/15E148 Safari/604.1')).toBe('Safari (スマホ)');

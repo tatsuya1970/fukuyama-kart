@@ -77,6 +77,7 @@ const JA: Dict = {
   'load.error': 'エラー: {0}（押すと再読み込み）',
   'gl.lost': '画面の描画が止まりました（GPU のメモリ不足など）。画質を下げると起きにくくなります。',
   'gl.reload': '再読み込み',
+  'gl.unavailable': 'この端末・ブラウザでは 3D の描画（WebGL）を始められませんでした。ほかのタブやアプリを閉じるか、ブラウザを再起動してから読み込み直してください。iPhone・iPad でロックダウンモードがオンのときも使えません。',
 
   'hud.toGoal': 'ゴールまで',
 
@@ -169,6 +170,7 @@ const EN: Dict = {
   'load.error': 'Error: {0} (tap to reload)',
   'gl.lost': 'Rendering stopped (the GPU may have run out of memory). A lower graphics setting makes this less likely.',
   'gl.reload': 'Reload',
+  'gl.unavailable': 'This device or browser could not start 3D rendering (WebGL). Close other tabs or apps, or restart the browser, then reload. It is also unavailable on iPhone or iPad while Lockdown Mode is on.',
 
   'hud.toGoal': 'To goal',
 

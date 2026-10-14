@@ -155,7 +155,16 @@ async function main() {
   const turnListed = dbg.get('debug') ? false : await turnConfigured();
   if (netConsent) await startNet();
   // 低画質では MSAA も切る (内蔵 GPU では帯域を食う)
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: quality.level !== 'low', powerPreference: 'high-performance' });
+  let renderer: THREE.WebGLRenderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: quality.level !== 'low', powerPreference: 'high-performance' });
+  } catch (e) {
+    // 端末側で WebGL が使えない (設定で切っている・ほかのタブが GPU を使い切っている・メモリ不足など)。
+    // 読み込み直しても直らないので、エラー扱いにせず直し方を案内して止める
+    report('gl', 'unavailable', { message: e instanceof Error ? e.message.slice(0, 300) : String(e) });
+    showGlUnavailable();
+    return;
+  }
   watchContextLoss(canvas);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, quality.maxPixelRatio));
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -1116,6 +1125,17 @@ function watchContextLoss(canvas: HTMLCanvasElement): void {
     box.style.display = 'flex';
   });
   canvas.addEventListener('webglcontextrestored', () => location.reload());
+}
+
+/** WebGL を作れなかったとき。直し方を出し、ボタンで読み込み直せるようにする */
+function showGlUnavailable(): void {
+  const box = document.getElementById('glLost');
+  if (!box) return;
+  document.getElementById('glLostMsg')!.textContent = t('gl.unavailable');
+  const b = document.getElementById('glLostBtn') as HTMLButtonElement;
+  b.textContent = t('gl.reload');
+  b.onclick = () => location.reload();
+  box.style.display = 'flex';
 }
 
 main().catch(e => {
